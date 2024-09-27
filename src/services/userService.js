@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const saltRounds = 10;
 
-const createUserService = async (name, email, password) => {
+const createUserService = async (name, email, password, discription) => {
     try {
         const user = await User.findOne({ email });
         if (user) {
@@ -20,7 +20,7 @@ const createUserService = async (name, email, password) => {
             name: name,
             email: email,
             password: hashPassword,
-            role: 'hehe',
+            discription: discription,
         });
         return result;
     } catch (error) {
