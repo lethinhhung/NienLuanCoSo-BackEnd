@@ -7,10 +7,13 @@ const saltRounds = 10;
 
 const createUserService = async (name, email, password, discription) => {
     try {
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ name });
         if (user) {
-            console.log('Chon email khac');
-            return null;
+            console.log('Chon username khac');
+            return {
+                EC: 0,
+                EM: 'Trung username',
+            };
         }
 
         // hash user password
@@ -22,7 +25,7 @@ const createUserService = async (name, email, password, discription) => {
             password: hashPassword,
             discription: discription,
         });
-        return result;
+        return { result };
     } catch (error) {
         console.log(error);
         return null;
