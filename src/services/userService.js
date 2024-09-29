@@ -29,10 +29,10 @@ const createUserService = async (name, email, password, discription) => {
     }
 };
 
-const loginService = async (email, password) => {
+const loginService = async (name, password) => {
     try {
         //fecth user by email
-        const user = await User.findOne({ email: email });
+        const user = await User.findOne({ name: name });
         if (user) {
             //compare password
             const isMatchPassword = await bcrypt.compare(password, user.password);
@@ -73,7 +73,20 @@ const loginService = async (email, password) => {
     }
 };
 
+const updateUserService = async (userId, discription, avatar) => {
+    const updateData = { discription };
+    if (avatar) {
+        updateData.avatar = {
+            data: avatar.buffer,
+            contentType: avatar.mimetype,
+        };
+    }
+    const user = await User.findByIdAndUpdate(userId, updateData, { new: true });
+    return user;
+};
+
 module.exports = {
     createUserService,
     loginService,
+    updateUserService,
 };
