@@ -1,4 +1,9 @@
-const { createUserService, loginService, updateUserService } = require('../services/userService');
+const {
+    createUserService,
+    loginService,
+    updateUserService,
+    getAccountInfoService,
+} = require('../services/userService');
 const upload = require('../config/multer');
 const jwt = require('jsonwebtoken');
 
@@ -16,8 +21,12 @@ const handleLogin = async (req, res) => {
     return res.status(200).json(data);
 };
 
-const getAccount = async (req, res) => {
-    return res.status(200).json(req.user);
+const getAccountInfo = async (req, res) => {
+    const token = req.headers.authorization.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const name = decoded.name;
+    const data = await getAccountInfoService(name);
+    return res.status(200).json(data);
 };
 
 const updateUser = async (req, res) => {
@@ -35,6 +44,6 @@ const updateUser = async (req, res) => {
 module.exports = {
     createUser,
     handleLogin,
-    getAccount,
+    getAccountInfo,
     updateUser,
 };

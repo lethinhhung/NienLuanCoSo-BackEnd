@@ -78,6 +78,35 @@ const loginService = async (name, password) => {
     }
 };
 
+const getAccountInfoService = async (name) => {
+    try {
+        const user = await User.findOne({ name });
+        if (!user) {
+            return {
+                EC: 1,
+                EM: 'User not found',
+            };
+        }
+
+        return {
+            EC: 0,
+            EM: 'Get info successfully',
+            info: {
+                name: user.name,
+                email: user.email,
+                discription: user.discription,
+                avatarPath: user.avatar,
+            },
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            EC: 1,
+            EM: 'An error occurred',
+        };
+    }
+};
+
 const updateUserService = async (name, discription, avatar) => {
     try {
         const user = await User.findOne({ name });
@@ -123,4 +152,5 @@ module.exports = {
     createUserService,
     loginService,
     updateUserService,
+    getAccountInfoService,
 };
