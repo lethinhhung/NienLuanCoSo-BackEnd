@@ -1,4 +1,4 @@
-const { createUserService, loginService } = require('../services/userService');
+const { createUserService, loginService, updateUserService } = require('../services/userService');
 const upload = require('../config/multer');
 
 const createUser = async (req, res) => {
@@ -20,10 +20,10 @@ const getAccount = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-    const { discription } = req.body;
+    const { name, discription } = req.body;
     const avatar = req.file;
 
-    const data = await updateUserService(req.user.id, discription, avatar);
+    const data = await updateUserService(name, discription, avatar);
     return res.status(200).json(data);
 };
 

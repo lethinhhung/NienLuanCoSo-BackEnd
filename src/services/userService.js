@@ -2,6 +2,8 @@ require('dotenv').config();
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
+const path = require('path');
 
 const saltRounds = 10;
 
@@ -76,16 +78,36 @@ const loginService = async (name, password) => {
     }
 };
 
-const updateUserService = async (userId, discription, avatar) => {
-    const updateData = { discription };
-    if (avatar) {
-        updateData.avatar = {
-            data: avatar.buffer,
-            contentType: avatar.mimetype,
+const updateUserService = async (name, discription, avatar) => {
+    try {
+        const user = await User.findOne({ name });
+        if (!user) {
+            return {
+                EC: 1,
+                EM: 'User not found',
+            };
+        }
+
+        user.discription = discription;
+        if (avatar) {
+            user.avatar = avatar.path;
+        }
+
+        await user.save();
+        return {
+            EC: 0,
+            EM: 'User updated successfully',
+            user: {
+                name: user.name,
+                email: user.email,
+                discription: user.discription,
+                avatar: user.avatar,
+            },
         };
+    } catch (error) {
+        console.log(error);
+        return null;
     }
-    const user = await User.findByIdAndUpdate(userId, updateData, { new: true });
-    return user;
 };
 
 module.exports = {
