@@ -89,8 +89,14 @@ const updateUserService = async (name, discription, avatar) => {
         }
 
         user.discription = discription;
-        if (avatar) {
+
+        if (avatar && avatar.path) {
             user.avatar = avatar.path;
+        } else {
+            return {
+                EC: 1,
+                EM: 'Invalid avatar',
+            };
         }
 
         await user.save();
@@ -106,7 +112,10 @@ const updateUserService = async (name, discription, avatar) => {
         };
     } catch (error) {
         console.log(error);
-        return null;
+        return {
+            EC: 1,
+            EM: 'An error occurred',
+        };
     }
 };
 
