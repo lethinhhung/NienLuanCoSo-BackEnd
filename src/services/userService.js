@@ -117,6 +117,20 @@ const updateUserService = async (name, discription, avatar) => {
             };
         }
 
+        ///delete old avatar file
+        if (user.avatar) {
+            const oldAvatarPath = path.join(user.avatar);
+
+            // Delete the old avatar file
+            fs.unlink(oldAvatarPath, (err) => {
+                if (err) {
+                    console.error(`Failed to delete old avatar: ${err.message}`);
+                } else {
+                    console.log('Old avatar deleted successfully');
+                }
+            });
+        }
+        ///
         user.discription = discription;
 
         if (avatar && avatar.path) {
