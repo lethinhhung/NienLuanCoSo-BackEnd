@@ -5,24 +5,29 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
 
-const createCourseService = async (emoji, color, cover, name, description) => {
+const createCourseService = async (owner, emoji, color, cover, name, description, tags, startDate, endDate, term) => {
     try {
-        const term = await Term.findOne({ name });
-        if (term) {
-            console.log('Duplicate term name');
+        const course = await Course.findOne({ name });
+        if (course) {
+            console.log('Duplicate course name');
             return {
                 EC: 0,
-                EM: 'Duplicate term name',
+                EM: 'Duplicate course name',
             };
         }
 
-        // save tag
-        let result = await Term.create({
+        // save course
+        let result = await Course.create({
+            owner: owner,
             emoji: emoji,
             color: color,
             cover: cover,
             name: name,
             description: description,
+            tags: tags,
+            startDate: new Date(startDate),
+            endDate: new Date(endDate),
+            term: term,
         });
         return { result };
     } catch (error) {
@@ -31,6 +36,17 @@ const createCourseService = async (emoji, color, cover, name, description) => {
     }
 };
 
+const getCoursesInfoService = async (owner) => {
+    try {
+        let result = await Course.find({ owner: owner });
+        return result;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
+
 module.exports = {
     createCourseService,
+    getCoursesInfoService,
 };
