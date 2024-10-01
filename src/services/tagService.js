@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
 
-const createTagService = async (name, color) => {
+const createTagService = async (owner, name, color) => {
     try {
         const tag = await Tag.findOne({ name });
         if (tag) {
@@ -18,6 +18,7 @@ const createTagService = async (name, color) => {
 
         // save tag
         let result = await Tag.create({
+            owner: owner,
             name: name,
             color: color,
         });
@@ -28,9 +29,9 @@ const createTagService = async (name, color) => {
     }
 };
 
-const getTagsInfoService = async () => {
+const getTagsInfoService = async (owner) => {
     try {
-        let result = await Tag.find({});
+        let result = await Tag.find({ owner: owner });
         return result;
     } catch (error) {
         console.log(error);

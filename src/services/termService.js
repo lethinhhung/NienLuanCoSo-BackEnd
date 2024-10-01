@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
 
-const createTermService = async (emoji, color, cover, name, description) => {
+const createTermService = async (owner, emoji, color, cover, name, description, startDate, endDate) => {
     try {
         const term = await Term.findOne({ name });
         if (term) {
@@ -16,13 +16,16 @@ const createTermService = async (emoji, color, cover, name, description) => {
             };
         }
 
-        // save tag
+        // save term
         let result = await Term.create({
+            owner: owner,
             emoji: emoji,
             color: color,
             cover: cover,
             name: name,
             description: description,
+            startDate: new Date(startDate),
+            endDate: new Date(endDate),
         });
         return { result };
     } catch (error) {
@@ -31,6 +34,17 @@ const createTermService = async (emoji, color, cover, name, description) => {
     }
 };
 
+const getTermsInfoService = async (owner) => {
+    try {
+        let result = await Term.find({ owner: owner });
+        return result;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
+
 module.exports = {
     createTermService,
+    getTermsInfoService,
 };

@@ -5,12 +5,22 @@ const jwt = require('jsonwebtoken');
 const createTag = async (req, res) => {
     const { name, color } = req.body;
 
-    const data = await createTagService(name, color);
+    const token = req.headers.authorization.split(' ')[1];
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const owner = decoded.name;
+
+    const data = await createTagService(owner, name, color);
     return res.status(200).json(data);
 };
 
 const getTagsInfo = async (req, res) => {
-    const data = await getTagsInfoService();
+    const token = req.headers.authorization.split(' ')[1];
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const owner = decoded.name;
+
+    const data = await getTagsInfoService(owner);
     return res.status(200).json(data);
 };
 

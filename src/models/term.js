@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const termSchema = new mongoose.Schema({
+    owner: String,
     emoji: String,
     color: String,
     cover: String,
