@@ -38,7 +38,7 @@ const getTagsInfoService = async () => {
     }
 };
 
-const updateTagService = async (name, discription, avatar) => {
+const updateTagService = async (name, description, avatar) => {
     try {
         const user = await User.findOne({ name });
         if (!user) {
@@ -62,7 +62,7 @@ const updateTagService = async (name, discription, avatar) => {
             });
         }
         ///
-        user.discription = discription;
+        user.description = description;
 
         if (avatar && avatar.path) {
             user.avatar = avatar.path;
@@ -80,7 +80,7 @@ const updateTagService = async (name, discription, avatar) => {
             user: {
                 name: user.name,
                 email: user.email,
-                discription: user.discription,
+                description: user.description,
                 avatar: user.avatar,
             },
         };

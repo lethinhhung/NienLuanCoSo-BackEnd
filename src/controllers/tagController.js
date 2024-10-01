@@ -18,11 +18,11 @@ const getTagsInfo = async (req, res) => {
 //     const token = req.headers.authorization.split(' ')[1];
 
 //     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-//     const { discription } = req.body;
+//     const { description } = req.body;
 //     const name = decoded.name;
 //     const avatar = req.file;
 
-//     const data = await updateUserService(name, discription, avatar);
+//     const data = await updateUserService(name, description, avatar);
 //     return res.status(200).json(data);
 // };
 

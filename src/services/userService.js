@@ -7,7 +7,7 @@ const path = require('path');
 
 const saltRounds = 10;
 
-const createUserService = async (name, email, password, discription) => {
+const createUserService = async (name, email, password, description) => {
     try {
         const user = await User.findOne({ name });
         if (user) {
@@ -25,7 +25,7 @@ const createUserService = async (name, email, password, discription) => {
             name: name,
             email: email,
             password: hashPassword,
-            discription: discription,
+            description: description,
         });
         return { result };
     } catch (error) {
@@ -94,7 +94,7 @@ const getAccountInfoService = async (name) => {
             info: {
                 name: user.name,
                 email: user.email,
-                discription: user.discription,
+                description: user.description,
                 avatarPath: user.avatar,
             },
         };
@@ -107,7 +107,7 @@ const getAccountInfoService = async (name) => {
     }
 };
 
-const updateUserService = async (name, discription, avatar) => {
+const updateUserService = async (name, description, avatar) => {
     try {
         const user = await User.findOne({ name });
         if (!user) {
@@ -131,7 +131,7 @@ const updateUserService = async (name, discription, avatar) => {
             });
         }
         ///
-        user.discription = discription;
+        user.description = description;
 
         if (avatar && avatar.path) {
             user.avatar = avatar.path;
@@ -149,7 +149,7 @@ const updateUserService = async (name, discription, avatar) => {
             user: {
                 name: user.name,
                 email: user.email,
-                discription: user.discription,
+                description: user.description,
                 avatar: user.avatar,
             },
         };
