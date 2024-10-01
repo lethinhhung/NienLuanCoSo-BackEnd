@@ -11,10 +11,10 @@ const createUserService = async (name, email, password, discription) => {
     try {
         const user = await User.findOne({ name });
         if (user) {
-            console.log('Chon username khac');
+            console.log('Duplicate username');
             return {
                 EC: 0,
-                EM: 'Trung username',
+                EM: 'Duplicate username',
             };
         }
 
@@ -44,7 +44,7 @@ const loginService = async (name, password) => {
             if (!isMatchPassword) {
                 return {
                     EC: 2,
-                    EM: 'Email/Password khong hop le',
+                    EM: 'Email/Password invalid',
                 };
             } else {
                 const payload = {
@@ -67,7 +67,7 @@ const loginService = async (name, password) => {
         } else {
             return {
                 EC: 1,
-                EM: 'Email/Password khong hop le',
+                EM: 'Email/Password invalid',
             };
         }
 
