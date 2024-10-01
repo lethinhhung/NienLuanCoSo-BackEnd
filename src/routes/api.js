@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const { createUser, handleLogin, getAccountInfo, updateUser } = require('../controllers/userController');
 const { createTag, getTagsInfo } = require('../controllers/tagController');
+const { createTerm } = require('../controllers/termController');
 const auth = require('../../middleware/auth');
 const delay = require('../../middleware/delay');
 const upload = require('../config/multer');
@@ -24,5 +25,7 @@ routerAPI.put('/update', upload.single('avatar'), updateUser);
 
 routerAPI.post('/create-new-tag', createTag);
 routerAPI.get('/get-tags-info', getTagsInfo);
+
+routerAPI.post('/create-new-term', createTerm);
 
 module.exports = routerAPI; //export default
