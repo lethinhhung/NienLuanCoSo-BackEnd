@@ -4,7 +4,7 @@ const path = require('path');
 // Cấu hình nơi lưu trữ file
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'src/public/uploads/images/'); // Thư mục lưu trữ file
+        cb(null, 'src/public/uploads/images/avatar/'); // Thư mục lưu trữ file
     },
     filename: function (req, file, cb) {
         const filename = Date.now() + path.extname(file.originalname);
