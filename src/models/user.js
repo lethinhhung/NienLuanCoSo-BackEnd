@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({
     password: String,
     discription: String,
     avatar: String,
+    terms: [{ type: mongoose.Schema.Types.ObjectId, ref: 'term' }],
 });
 
 const User = mongoose.model('user', userSchema);
