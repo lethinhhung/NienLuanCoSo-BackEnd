@@ -4,9 +4,13 @@ const jwt = require('jsonwebtoken');
 const Tag = require('../models/tag');
 
 const createCourse = async (req, res) => {
-    const { emoji, color, name, description, tags, startDate, endDate, term } = req.body;
+    const { emoji, color, name, description, startDate, endDate, term } = req.body;
     const cover = req.file;
-    console.log(cover);
+    const tags = [];
+    req.body.tags.forEach((tag) => {
+        tags.push(tag);
+    });
+    console.log(tags);
     const token = req.headers.authorization.split(' ')[1];
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);

@@ -48,7 +48,7 @@ const uploadAvatar = multer({
 const uploadCover = multer({
     storage: coverStorage,
     limits: {
-        fileSize: 1024 * 1024 * 5, // Giới hạn kích thước file 5MB
+        fileSize: 1024 * 1024 * 100, // Giới hạn kích thước file 5MB
     },
     fileFilter: fileFilter,
 });
