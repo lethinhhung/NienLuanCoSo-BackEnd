@@ -39,63 +39,63 @@ const getTagsInfoService = async (owner) => {
     }
 };
 
-const updateTagService = async (name, description, avatar) => {
-    try {
-        const user = await User.findOne({ name });
-        if (!user) {
-            return {
-                EC: 1,
-                EM: 'User not found',
-            };
-        }
+// const updateTagService = async (name, description, avatar) => {
+//     try {
+//         const user = await User.findOne({ name });
+//         if (!user) {
+//             return {
+//                 EC: 1,
+//                 EM: 'User not found',
+//             };
+//         }
 
-        ///delete old avatar file
-        if (user.avatar) {
-            const oldAvatarPath = path.join(user.avatar);
+//         ///delete old avatar file
+//         if (user.avatar) {
+//             const oldAvatarPath = path.join(user.avatar);
 
-            // Delete the old avatar file
-            fs.unlink(oldAvatarPath, (err) => {
-                if (err) {
-                    console.error(`Failed to delete old avatar: ${err.message}`);
-                } else {
-                    console.log('Old avatar deleted successfully');
-                }
-            });
-        }
-        ///
-        user.description = description;
+//             // Delete the old avatar file
+//             fs.unlink(oldAvatarPath, (err) => {
+//                 if (err) {
+//                     console.error(`Failed to delete old avatar: ${err.message}`);
+//                 } else {
+//                     console.log('Old avatar deleted successfully');
+//                 }
+//             });
+//         }
+//         ///
+//         user.description = description;
 
-        if (avatar && avatar.path) {
-            user.avatar = avatar.path;
-        } else {
-            return {
-                EC: 1,
-                EM: 'Invalid avatar',
-            };
-        }
+//         if (avatar && avatar.path) {
+//             user.avatar = avatar.path;
+//         } else {
+//             return {
+//                 EC: 1,
+//                 EM: 'Invalid avatar',
+//             };
+//         }
 
-        await user.save();
-        return {
-            EC: 0,
-            EM: 'User updated successfully',
-            user: {
-                name: user.name,
-                email: user.email,
-                description: user.description,
-                avatar: user.avatar,
-            },
-        };
-    } catch (error) {
-        console.log(error);
-        return {
-            EC: 1,
-            EM: 'An error occurred',
-        };
-    }
-};
+//         await user.save();
+//         return {
+//             EC: 0,
+//             EM: 'User updated successfully',
+//             user: {
+//                 name: user.name,
+//                 email: user.email,
+//                 description: user.description,
+//                 avatar: user.avatar,
+//             },
+//         };
+//     } catch (error) {
+//         console.log(error);
+//         return {
+//             EC: 1,
+//             EM: 'An error occurred',
+//         };
+//     }
+// };
 
 module.exports = {
     createTagService,
-    updateTagService,
+    // updateTagService,
     getTagsInfoService,
 };
