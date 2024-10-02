@@ -32,7 +32,7 @@ const createCourseService = async (
             owner: owner,
             emoji: emoji,
             color: color,
-            cover: cover,
+            cover: cover.path,
             name: name,
             description: description,
             tags: tagsIds,

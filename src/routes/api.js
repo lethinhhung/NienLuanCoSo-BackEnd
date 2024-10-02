@@ -6,7 +6,7 @@ const { createTerm, getTermsInfo } = require('../controllers/termController');
 const { createCourse, getCoursesInfo } = require('../controllers/courseController');
 const auth = require('../../middleware/auth');
 const delay = require('../../middleware/delay');
-const upload = require('../../middleware/multer');
+const { uploadAvatar, uploadCover } = require('../../middleware/multer');
 
 const routerAPI = express.Router();
 
@@ -24,7 +24,7 @@ routerAPI.post('/login', handleLogin);
 
 //Account
 routerAPI.get('/account', getAccountInfo);
-routerAPI.put('/update', upload.single('avatar'), updateUser);
+routerAPI.put('/update', uploadAvatar.single('avatar'), updateUser);
 
 //Tag
 routerAPI.post('/create-new-tag', createTag);
@@ -35,7 +35,7 @@ routerAPI.post('/create-new-term', createTerm);
 routerAPI.get('/get-terms-info', getTermsInfo);
 
 //Course
-routerAPI.post('/create-new-course', createCourse);
+routerAPI.post('/create-new-course', uploadCover.single('cover'), createCourse);
 routerAPI.get('/get-courses-info', getCoursesInfo);
 
 //Lesson
