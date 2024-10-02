@@ -7,9 +7,11 @@ const createCourse = async (req, res) => {
     const { emoji, color, name, description, startDate, endDate, term } = req.body;
     const cover = req.file;
     const tags = [];
-    req.body.tags.forEach((tag) => {
-        tags.push(tag);
-    });
+    if (req.body.tags) {
+        req.body.tags.forEach((tag) => {
+            tags.push(tag);
+        });
+    }
     console.log(tags);
     const token = req.headers.authorization.split(' ')[1];
 

@@ -26,13 +26,17 @@ const createCourseService = async (
                 EM: 'Duplicate course name',
             };
         }
+        let coverPath = '';
+        if (cover) {
+            coverPath = cover.path;
+        }
 
         // save course
         let result = await Course.create({
             owner: owner,
             emoji: emoji,
             color: color,
-            cover: cover.path,
+            cover: coverPath,
             name: name,
             description: description,
             tags: tagsIds,
