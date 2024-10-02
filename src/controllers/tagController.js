@@ -1,5 +1,5 @@
 const { createTagService, getTagsInfoService } = require('../services/tagService');
-const upload = require('../config/multer');
+const upload = require('../../middleware/multer');
 const jwt = require('jsonwebtoken');
 
 const createTag = async (req, res) => {

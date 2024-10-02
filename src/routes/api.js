@@ -6,7 +6,7 @@ const { createTerm, getTermsInfo } = require('../controllers/termController');
 const { createCourse, getCoursesInfo } = require('../controllers/courseController');
 const auth = require('../../middleware/auth');
 const delay = require('../../middleware/delay');
-const upload = require('../config/multer');
+const upload = require('../../middleware/multer');
 
 const routerAPI = express.Router();
 

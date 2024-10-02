@@ -4,7 +4,7 @@ const {
     updateUserService,
     getAccountInfoService,
 } = require('../services/userService');
-const upload = require('../config/multer');
+const upload = require('../../middleware/multer');
 const jwt = require('jsonwebtoken');
 
 const createUser = async (req, res) => {

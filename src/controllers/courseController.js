@@ -1,5 +1,5 @@
 const { createCourseService, getCoursesInfoService } = require('../services/courseService');
-const upload = require('../config/multer');
+const upload = require('../../middleware/multer');
 const jwt = require('jsonwebtoken');
 const Tag = require('../models/tag');
 

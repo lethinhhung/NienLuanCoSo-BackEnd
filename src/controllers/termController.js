@@ -1,5 +1,5 @@
 const { createTermService, getTermsInfoService } = require('../services/termService');
-const upload = require('../config/multer');
+const upload = require('../../middleware/multer');
 const jwt = require('jsonwebtoken');
 
 const createTerm = async (req, res) => {
