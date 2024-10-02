@@ -5,7 +5,18 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
 
-const createCourseService = async (owner, emoji, color, cover, name, description, tags, startDate, endDate, term) => {
+const createCourseService = async (
+    owner,
+    emoji,
+    color,
+    cover,
+    name,
+    description,
+    tagsIds,
+    startDate,
+    endDate,
+    term,
+) => {
     try {
         const course = await Course.findOne({ name });
         if (course) {
@@ -24,7 +35,7 @@ const createCourseService = async (owner, emoji, color, cover, name, description
             cover: cover,
             name: name,
             description: description,
-            tags: tags,
+            tags: tagsIds,
             startDate: new Date(startDate),
             endDate: new Date(endDate),
             term: term,
