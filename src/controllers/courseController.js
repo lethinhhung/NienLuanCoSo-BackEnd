@@ -34,6 +34,8 @@ const createCourse = async (req, res) => {
     return res.status(200).json(data);
 };
 
+const getCourseInfo = async (req, res) => {};
+
 const getCoursesInfo = async (req, res) => {
     const token = req.headers.authorization.split(' ')[1];
 
@@ -46,5 +48,6 @@ const getCoursesInfo = async (req, res) => {
 
 module.exports = {
     createCourse,
+    getCourseInfo,
     getCoursesInfo,
 };
