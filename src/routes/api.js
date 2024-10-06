@@ -37,7 +37,7 @@ routerAPI.get('/get-terms-info', getTermsInfo);
 
 //Course
 routerAPI.post('/create-new-course', uploadCover.single('cover'), createCourse);
-routerAPI.get('/get-course-info', getCourseInfo);
+routerAPI.post('/get-course-info', getCourseInfo);
 routerAPI.get('/get-courses-info', getCoursesInfo);
 
 //Lesson

@@ -1,4 +1,4 @@
-const { createCourseService, getCoursesInfoService } = require('../services/courseService');
+const { createCourseService, getCoursesInfoService, getCourseInfoService } = require('../services/courseService');
 const { uploadAvatar } = require('../../middleware/multer');
 const jwt = require('jsonwebtoken');
 const Tag = require('../models/tag');
@@ -39,7 +39,17 @@ const createCourse = async (req, res) => {
     return res.status(200).json(data);
 };
 
-const getCourseInfo = async (req, res) => {};
+const getCourseInfo = async (req, res) => {
+    const token = req.headers.authorization.split(' ')[1];
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const owner = decoded.name;
+
+    const { courseId } = req.body;
+
+    const data = await getCourseInfoService(owner, courseId);
+    return res.status(200).json(data);
+};
 
 const getCoursesInfo = async (req, res) => {
     const token = req.headers.authorization.split(' ')[1];

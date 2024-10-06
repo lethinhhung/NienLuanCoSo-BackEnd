@@ -61,7 +61,18 @@ const getCoursesInfoService = async (owner) => {
     }
 };
 
+const getCourseInfoService = async (owner, courseId) => {
+    try {
+        let result = await Course.findById(courseId);
+        return result;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
+
 module.exports = {
     createCourseService,
     getCoursesInfoService,
+    getCourseInfoService,
 };
