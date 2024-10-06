@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const { createUser, handleLogin, getAccountInfo, updateUser } = require('../controllers/userController');
-const { createTag, getTagsInfo } = require('../controllers/tagController');
+const { createTag, getTagsInfo, getTagsInfoByIds } = require('../controllers/tagController');
 const { createTerm, getTermsInfo } = require('../controllers/termController');
 const { createCourse, getCourseInfo, getCoursesInfo } = require('../controllers/courseController');
 const auth = require('../../middleware/auth');
@@ -29,6 +29,7 @@ routerAPI.put('/update', uploadAvatar.single('avatar'), updateUser);
 //Tag
 routerAPI.post('/create-new-tag', createTag);
 routerAPI.get('/get-tags-info', getTagsInfo);
+routerAPI.post('/get-tags-info-by-ids', getTagsInfoByIds);
 
 //Term
 routerAPI.post('/create-new-term', uploadCover.single('cover'), createTerm);

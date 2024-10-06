@@ -39,6 +39,16 @@ const getTagsInfoService = async (owner) => {
     }
 };
 
+const getTagsInfoByIdsService = async (owner, tagsIds) => {
+    try {
+        let result = await Tag.find({ _id: { $in: tagsIds } });
+        return result;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
+
 // const updateTagService = async (name, description, avatar) => {
 //     try {
 //         const user = await User.findOne({ name });
@@ -98,4 +108,5 @@ module.exports = {
     createTagService,
     // updateTagService,
     getTagsInfoService,
+    getTagsInfoByIdsService,
 };
