@@ -31,7 +31,7 @@ routerAPI.post('/create-new-tag', createTag);
 routerAPI.get('/get-tags-info', getTagsInfo);
 
 //Term
-routerAPI.post('/create-new-term', createTerm);
+routerAPI.post('/create-new-term', uploadCover.single('cover'), createTerm);
 routerAPI.get('/get-terms-info', getTermsInfo);
 
 //Course

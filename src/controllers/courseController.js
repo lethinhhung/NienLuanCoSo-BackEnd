@@ -2,6 +2,7 @@ const { createCourseService, getCoursesInfoService } = require('../services/cour
 const { uploadAvatar } = require('../../middleware/multer');
 const jwt = require('jsonwebtoken');
 const Tag = require('../models/tag');
+const Term = require('../models/term');
 
 const createCourse = async (req, res) => {
     const { emoji, color, name, description, startDate, endDate, term } = req.body;
@@ -21,6 +22,8 @@ const createCourse = async (req, res) => {
     const tagsResult = await Tag.find({ name: { $in: tags } }).select('_id');
     const tagIds = tagsResult.map((tag) => tag._id);
 
+    const termId = await Term.findOne({ name: term }).select('_id');
+
     const data = await createCourseService(
         owner,
         emoji,
@@ -31,7 +34,7 @@ const createCourse = async (req, res) => {
         tagIds,
         startDate,
         endDate,
-        term,
+        termId,
     );
     return res.status(200).json(data);
 };

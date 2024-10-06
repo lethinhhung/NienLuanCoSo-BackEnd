@@ -9,19 +9,23 @@ const createTermService = async (owner, emoji, color, cover, name, description, 
     try {
         const term = await Term.findOne({ name });
         if (term) {
-            console.log('Duplicate term name');
+            console.log('Duplicate course name');
             return {
                 EC: 0,
-                EM: 'Duplicate term name',
+                EM: 'Duplicate course name',
             };
         }
+        let coverPath = '';
+        if (cover) {
+            coverPath = cover.path;
+        }
 
-        // save term
+        // save course
         let result = await Term.create({
             owner: owner,
             emoji: emoji,
             color: color,
-            cover: cover,
+            cover: coverPath,
             name: name,
             description: description,
             startDate: new Date(startDate),
