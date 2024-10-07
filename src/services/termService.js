@@ -48,7 +48,18 @@ const getTermsInfoService = async (owner) => {
     }
 };
 
+const getTermInfoService = async (owner, termId) => {
+    try {
+        let result = await Term.findById(termId);
+        return result;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
+
 module.exports = {
     createTermService,
     getTermsInfoService,
+    getTermInfoService,
 };

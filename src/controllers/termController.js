@@ -1,4 +1,4 @@
-const { createTermService, getTermsInfoService } = require('../services/termService');
+const { createTermService, getTermsInfoService, getTermInfoService } = require('../services/termService');
 const upload = require('../../middleware/multer');
 const jwt = require('jsonwebtoken');
 
@@ -24,7 +24,20 @@ const getTermsInfo = async (req, res) => {
     return res.status(200).json(data);
 };
 
+const getTermInfo = async (req, res) => {
+    const token = req.headers.authorization.split(' ')[1];
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const owner = decoded.name;
+
+    const { termId } = req.body;
+
+    const data = await getTermInfoService(owner, termId);
+    return res.status(200).json(data);
+};
+
 module.exports = {
     createTerm,
     getTermsInfo,
+    getTermInfo,
 };

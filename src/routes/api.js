@@ -2,8 +2,8 @@ const express = require('express');
 const path = require('path');
 const { createUser, handleLogin, getAccountInfo, updateUser } = require('../controllers/userController');
 const { createTag, getTagsInfo, getTagsInfoByIds } = require('../controllers/tagController');
-const { createTerm, getTermsInfo } = require('../controllers/termController');
-const { createCourse, getCourseInfo, getCoursesInfo } = require('../controllers/courseController');
+const { createTerm, getTermsInfo, getTermInfo } = require('../controllers/termController');
+const { createCourse, getCourseInfo, getCoursesInfo, getCoursesInfoByIds } = require('../controllers/courseController');
 const auth = require('../../middleware/auth');
 const delay = require('../../middleware/delay');
 const { uploadAvatar, uploadCover } = require('../../middleware/multer');
@@ -34,11 +34,13 @@ routerAPI.post('/get-tags-info-by-ids', getTagsInfoByIds);
 //Term
 routerAPI.post('/create-new-term', uploadCover.single('cover'), createTerm);
 routerAPI.get('/get-terms-info', getTermsInfo);
+routerAPI.post('/get-term-info', getTermInfo);
 
 //Course
 routerAPI.post('/create-new-course', uploadCover.single('cover'), createCourse);
 routerAPI.post('/get-course-info', getCourseInfo);
 routerAPI.get('/get-courses-info', getCoursesInfo);
+routerAPI.post('/get-courses-info-by-ids', getCoursesInfoByIds);
 
 //Lesson
 

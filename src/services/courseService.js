@@ -71,8 +71,19 @@ const getCourseInfoService = async (owner, courseId) => {
     }
 };
 
+const getCoursesInfoByIdsService = async (owner, coursesIds) => {
+    try {
+        let result = await Course.find({ _id: { $in: coursesIds } });
+        return result;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
+
 module.exports = {
     createCourseService,
     getCoursesInfoService,
     getCourseInfoService,
+    getCoursesInfoByIdsService,
 };
