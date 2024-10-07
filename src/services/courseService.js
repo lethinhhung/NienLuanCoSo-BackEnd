@@ -1,9 +1,11 @@
 require('dotenv').config();
 const Course = require('../models/course');
+const Term = require('../models/term');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
+const { addCourseService } = require('./termService');
 
 const createCourseService = async (
     owner,
@@ -32,7 +34,8 @@ const createCourseService = async (
         }
 
         // save course
-        let result = await Course.create({
+
+        const result = await Course.create({
             owner: owner,
             emoji: emoji,
             color: color,
@@ -44,6 +47,11 @@ const createCourseService = async (
             endDate: new Date(endDate),
             term: term,
         });
+        const termId = term;
+        const courseId = result._id;
+
+        addCourseService(termId, courseId);
+
         return { result };
     } catch (error) {
         console.log(error);

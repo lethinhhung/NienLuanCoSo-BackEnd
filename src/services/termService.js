@@ -58,8 +58,25 @@ const getTermInfoService = async (owner, termId) => {
     }
 };
 
+const addCourseService = async (termId, courseId) => {
+    try {
+        let term = await Term.findById(termId);
+        if (term) {
+            term.courses.push(courseId);
+            await term.save();
+            return term;
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
+
 module.exports = {
     createTermService,
     getTermsInfoService,
     getTermInfoService,
+    addCourseService,
 };
