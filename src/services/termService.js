@@ -74,9 +74,33 @@ const addCourseService = async (termId, courseId) => {
     }
 };
 
+const deleteTermService = async (owner, termId) => {
+    try {
+        let result = await Term.findByIdAndDelete(termId);
+        if (result.cover) {
+            const coverPath = path.join(result.cover);
+
+            // Delete the old avatar file
+            fs.unlink(coverPath, (err) => {
+                if (err) {
+                    console.error(`Failed to delete cover: ${err.message}`);
+                } else {
+                    console.log('Cover deleted successfully');
+                }
+            });
+        }
+
+        return result;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
+
 module.exports = {
     createTermService,
     getTermsInfoService,
     getTermInfoService,
     addCourseService,
+    deleteTermService,
 };
