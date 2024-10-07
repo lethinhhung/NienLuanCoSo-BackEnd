@@ -89,9 +89,34 @@ const getCoursesInfoByIdsService = async (owner, coursesIds) => {
     }
 };
 
+const deleteCourseService = async (owner, courseId) => {
+    try {
+        // Delete the course
+        let result = await Course.findByIdAndDelete(courseId);
+        if (result.cover) {
+            const coverPath = path.join(result.cover);
+
+            // Delete the old avatar file
+            fs.unlink(coverPath, (err) => {
+                if (err) {
+                    console.error(`Failed to delete cover: ${err.message}`);
+                } else {
+                    console.log('Cover deleted successfully');
+                }
+            });
+        }
+
+        return result;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
+
 module.exports = {
     createCourseService,
     getCoursesInfoService,
     getCourseInfoService,
     getCoursesInfoByIdsService,
+    deleteCourseService,
 };

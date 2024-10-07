@@ -3,6 +3,7 @@ const {
     getCoursesInfoService,
     getCourseInfoService,
     getCoursesInfoByIdsService,
+    deleteCourseService,
 } = require('../services/courseService');
 const { uploadAvatar } = require('../../middleware/multer');
 const jwt = require('jsonwebtoken');
@@ -78,9 +79,22 @@ const getCoursesInfoByIds = async (req, res) => {
     return res.status(200).json(data);
 };
 
+const deleteCourse = async (req, res) => {
+    const token = req.headers.authorization.split(' ')[1];
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const owner = decoded.name;
+
+    const { courseId } = req.body;
+
+    const data = await deleteCourseService(owner, courseId);
+    return res.status(200).json(data);
+};
+
 module.exports = {
     createCourse,
     getCourseInfo,
     getCoursesInfo,
     getCoursesInfoByIds,
+    deleteCourse,
 };

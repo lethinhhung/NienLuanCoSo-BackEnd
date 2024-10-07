@@ -3,7 +3,13 @@ const path = require('path');
 const { createUser, handleLogin, getAccountInfo, updateUser } = require('../controllers/userController');
 const { createTag, getTagsInfo, getTagsInfoByIds } = require('../controllers/tagController');
 const { createTerm, getTermsInfo, getTermInfo } = require('../controllers/termController');
-const { createCourse, getCourseInfo, getCoursesInfo, getCoursesInfoByIds } = require('../controllers/courseController');
+const {
+    createCourse,
+    getCourseInfo,
+    getCoursesInfo,
+    getCoursesInfoByIds,
+    deleteCourse,
+} = require('../controllers/courseController');
 const auth = require('../../middleware/auth');
 const delay = require('../../middleware/delay');
 const { uploadAvatar, uploadCover } = require('../../middleware/multer');
@@ -41,6 +47,7 @@ routerAPI.post('/create-new-course', uploadCover.single('cover'), createCourse);
 routerAPI.post('/get-course-info', getCourseInfo);
 routerAPI.get('/get-courses-info', getCoursesInfo);
 routerAPI.post('/get-courses-info-by-ids', getCoursesInfoByIds);
+routerAPI.post('/delete-course', deleteCourse);
 
 //Lesson
 
