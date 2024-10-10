@@ -20,7 +20,7 @@ const createCourseService = async (
     term,
 ) => {
     try {
-        const course = await Course.findOne({ name });
+        const course = await Course.findOne({ name: name, owner: owner });
         if (course) {
             console.log('Duplicate course name');
             return {
