@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
-const { addLessonService } = require('./courseService');
+const { addLessonService } = require('./sharedService');
 
 const createLessonService = async (owner, name, description, content, course) => {
     try {
@@ -22,8 +22,8 @@ const createLessonService = async (owner, name, description, content, course) =>
         const courseId = course;
         const lessonId = result._id;
 
-        addLessonService(lessonId, courseId);
-
+        const kq = await addLessonService(lessonId, courseId);
+        console.log(kq);
         return { result };
     } catch (error) {
         console.log(error);
