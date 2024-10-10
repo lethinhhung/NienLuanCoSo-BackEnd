@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
-const { addCourseService } = require('./termService');
+const { addCourseService, removeCourseService } = require('./sharedService');
 
 const createCourseService = async (
     owner,
@@ -50,7 +50,8 @@ const createCourseService = async (
         const termId = term;
         const courseId = result._id;
 
-        addCourseService(termId, courseId);
+        const kq = await addCourseService(termId, courseId);
+        console.log(kq);
 
         return { result };
     } catch (error) {
@@ -104,6 +105,13 @@ const deleteCourseService = async (owner, courseId) => {
                     console.log('Cover deleted successfully');
                 }
             });
+        }
+
+        if (result.term) {
+            const termId = result.term;
+            const courseId = result._id;
+            const kq = removeCourseService(termId, courseId);
+            console.log('Delete ' + kq + ' successfully!');
         }
 
         return result;

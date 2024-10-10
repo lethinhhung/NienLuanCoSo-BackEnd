@@ -1,9 +1,12 @@
 require('dotenv').config();
 const Term = require('../models/term');
+const Course = require('../models/course');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
+
+const { addCourseService, removeCourseService, removeTermService } = require('./sharedService');
 
 const createTermService = async (owner, emoji, color, cover, name, description, startDate, endDate) => {
     try {
@@ -58,22 +61,6 @@ const getTermInfoService = async (owner, termId) => {
     }
 };
 
-const addCourseService = async (termId, courseId) => {
-    try {
-        let term = await Term.findById(termId);
-        if (term) {
-            term.courses.push(courseId);
-            await term.save();
-            return term;
-        } else {
-            return null;
-        }
-    } catch (error) {
-        console.log(error);
-        return null;
-    }
-};
-
 const deleteTermService = async (owner, termId) => {
     try {
         let result = await Term.findByIdAndDelete(termId);
@@ -89,6 +76,13 @@ const deleteTermService = async (owner, termId) => {
                 }
             });
         }
+        if (result.courses && Array.isArray(result.courses)) {
+            for (const courseId of result.courses) {
+                const startDate = result.startDate;
+                const endDate = result.endDate;
+                await removeTermService(courseId, startDate, endDate);
+            }
+        }
 
         return result;
     } catch (error) {
@@ -102,5 +96,6 @@ module.exports = {
     getTermsInfoService,
     getTermInfoService,
     addCourseService,
+    removeCourseService,
     deleteTermService,
 };
