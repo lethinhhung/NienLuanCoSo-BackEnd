@@ -113,10 +113,27 @@ const deleteCourseService = async (owner, courseId) => {
     }
 };
 
+const addLessonService = async (lessonId, courseId) => {
+    try {
+        let course = await Course.findById(courseId);
+        if (course) {
+            course.lessons.push(lessonId);
+            await course.save();
+            return course;
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
+
 module.exports = {
     createCourseService,
     getCoursesInfoService,
     getCourseInfoService,
     getCoursesInfoByIdsService,
     deleteCourseService,
+    addLessonService,
 };
