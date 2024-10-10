@@ -10,7 +10,7 @@ const {
     getCoursesInfoByIds,
     deleteCourse,
 } = require('../controllers/courseController');
-const { createLesson } = require('../controllers/lessonController');
+const { createLesson, getLessonInfo } = require('../controllers/lessonController');
 const auth = require('../../middleware/auth');
 const delay = require('../../middleware/delay');
 const { uploadAvatar, uploadCover } = require('../../middleware/multer');
@@ -53,4 +53,10 @@ routerAPI.post('/delete-course', deleteCourse);
 
 //Lesson
 routerAPI.post('/create-new-lesson', createLesson);
+// routerAPI.post('/create-new-course', uploadCover.single('cover'), createCourse);
+routerAPI.post('/get-lesson-info', getLessonInfo);
+// routerAPI.get('/get-courses-info', getCoursesInfo);
+// routerAPI.post('/get-courses-info-by-ids', getCoursesInfoByIds);
+// routerAPI.post('/delete-course', deleteCourse);
+
 module.exports = routerAPI; //export default

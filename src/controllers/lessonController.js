@@ -22,6 +22,19 @@ const createLesson = async (req, res) => {
     return res.status(200).json(data);
 };
 
+const getLessonInfo = async (req, res) => {
+    const token = req.headers.authorization.split(' ')[1];
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const owner = decoded.name;
+
+    const { lessonId } = req.body;
+
+    const data = await getLessonInfoService(owner, lessonId);
+    return res.status(200).json(data);
+};
+
 module.exports = {
     createLesson,
+    getLessonInfo,
 };
