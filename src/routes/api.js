@@ -16,6 +16,7 @@ const {
     getLessonsInfoByIds,
     addContent,
     getContent,
+    deleteLesson,
 } = require('../controllers/lessonController');
 const { addCourseToTerm, removeCourseFromTerm } = require('../controllers/sharedController');
 const auth = require('../../middleware/auth');
@@ -68,6 +69,6 @@ routerAPI.post('/get-lesson-content', getContent);
 routerAPI.post('/get-lesson-info', getLessonInfo);
 // routerAPI.get('/get-courses-info', getCoursesInfo);
 routerAPI.post('/get-lessons-info-by-ids', getLessonsInfoByIds);
-// routerAPI.post('/delete-course', deleteCourse);
+routerAPI.post('/delete-lesson', deleteLesson);
 
 module.exports = routerAPI; //export default

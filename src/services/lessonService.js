@@ -61,17 +61,6 @@ const getLessonsInfoByIdsService = async (owner, lessonsIds) => {
     }
 };
 
-const deleteLessonService = async (owner, lessonId) => {
-    try {
-        let result = await Lesson.findByIdAndDelete(lessonId);
-
-        return result;
-    } catch (error) {
-        console.log(error);
-        return null;
-    }
-};
-
 const addContentService = async (lessonId, content) => {
     try {
         let lesson = await Lesson.findById(lessonId);
@@ -111,6 +100,31 @@ const getContentService = async (owner, lessonId) => {
             console.log('Content not found');
             return null;
         }
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
+
+const deleteLessonService = async (owner, lessonId) => {
+    try {
+        // Delete the lesson
+        let result = await Lesson.findByIdAndDelete(lessonId);
+        console.log(result);
+        if (result.content) {
+            const contentPath = path.join(result.content);
+
+            // Delete the old avatar file
+            fs.unlink(contentPath, (err) => {
+                if (err) {
+                    console.error(`Failed to delete content: ${err.message}`);
+                } else {
+                    console.log('Cotent deleted successfully');
+                }
+            });
+        }
+
+        return result;
     } catch (error) {
         console.log(error);
         return null;
