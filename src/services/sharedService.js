@@ -14,6 +14,7 @@ const addCourseService = async (termId, courseId) => {
             await term.save();
             return term;
         } else {
+            console.log('ko tim thay term');
             return null;
         }
     } catch (error) {
@@ -53,7 +54,7 @@ const removeTermService = async (courseId, startDate, endDate) => {
         course.startDate = new Date(startDate);
         course.endDate = new Date(endDate);
         const result = await course.save();
-        console.log(result);
+        return result;
     } catch (error) {
         console.log(error);
         return null;
@@ -76,9 +77,27 @@ const addLessonService = async (lessonId, courseId) => {
     }
 };
 
+const addTermService = async (courseId, termId) => {
+    try {
+        let course = await Course.findById(courseId);
+        if (course) {
+            course.term = termId;
+            await course.save();
+            return course;
+        } else {
+            console.log('ko tim thay course');
+            return null;
+        }
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
+
 module.exports = {
     addCourseService,
     removeCourseService,
     removeTermService,
     addLessonService,
+    addTermService,
 };

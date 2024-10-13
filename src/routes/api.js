@@ -11,6 +11,7 @@ const {
     deleteCourse,
 } = require('../controllers/courseController');
 const { createLesson, getLessonInfo, getLessonsInfoByIds } = require('../controllers/lessonController');
+const { addCourseToTerm, removeCourseFromTerm } = require('../controllers/sharedController');
 const auth = require('../../middleware/auth');
 const delay = require('../../middleware/delay');
 const { uploadAvatar, uploadCover } = require('../../middleware/multer');
@@ -43,6 +44,8 @@ routerAPI.post('/create-new-term', uploadCover.single('cover'), createTerm);
 routerAPI.get('/get-terms-info', getTermsInfo);
 routerAPI.post('/get-term-info', getTermInfo);
 routerAPI.post('/delete-term', deleteTerm);
+routerAPI.post('/add-course-to-term-by-id', addCourseToTerm);
+routerAPI.post('/remove-course-from-term-by-id', removeCourseFromTerm);
 
 //Course
 routerAPI.post('/create-new-course', uploadCover.single('cover'), createCourse);
