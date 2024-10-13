@@ -81,8 +81,14 @@ const addTermService = async (courseId, termId) => {
     try {
         let course = await Course.findById(courseId);
         if (course) {
-            course.term = termId;
-            await course.save();
+            let term = await Term.findById(termId);
+            if (term) {
+                course.term = termId;
+                course.startDate = term.startDate;
+                course.endDate = term.endDate;
+                await course.save();
+            }
+
             return course;
         } else {
             console.log('ko tim thay course');
