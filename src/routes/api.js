@@ -10,11 +10,11 @@ const {
     getCoursesInfoByIds,
     deleteCourse,
 } = require('../controllers/courseController');
-const { createLesson, getLessonInfo, getLessonsInfoByIds } = require('../controllers/lessonController');
+const { createLesson, getLessonInfo, getLessonsInfoByIds, addContent } = require('../controllers/lessonController');
 const { addCourseToTerm, removeCourseFromTerm } = require('../controllers/sharedController');
 const auth = require('../../middleware/auth');
 const delay = require('../../middleware/delay');
-const { uploadAvatar, uploadCover } = require('../../middleware/multer');
+const { uploadAvatar, uploadCover, uploadContent } = require('../../middleware/multer');
 
 const routerAPI = express.Router();
 
@@ -56,6 +56,7 @@ routerAPI.post('/delete-course', deleteCourse);
 
 //Lesson
 routerAPI.post('/create-new-lesson', createLesson);
+routerAPI.post('/add-content-to-lesson', uploadContent.single('content'), addContent);
 // routerAPI.post('/create-new-course', uploadCover.single('cover'), createCourse);
 routerAPI.post('/get-lesson-info', getLessonInfo);
 // routerAPI.get('/get-courses-info', getCoursesInfo);

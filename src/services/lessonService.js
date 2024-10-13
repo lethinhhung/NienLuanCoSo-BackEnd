@@ -72,10 +72,38 @@ const deleteLessonService = async (owner, lessonId) => {
     }
 };
 
+const addContentService = async (lessonId, content) => {
+    try {
+        let lesson = await Lesson.findById(lessonId);
+        if (lesson) {
+            if (lesson.content) {
+                const oldContentPath = path.join(lesson.content);
+
+                // Delete the old avatar file
+                fs.unlink(oldContentPath, (err) => {
+                    if (err) {
+                        console.error(`Failed to delete old content: ${err.message}`);
+                    } else {
+                        console.log('Old content deleted successfully');
+                    }
+                });
+            }
+            lesson.content = content.path;
+
+            await lesson.save();
+
+            return 'success';
+        }
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
 module.exports = {
     createLessonService,
     getLessonsInfoService,
     getLessonInfoService,
     getLessonsInfoByIdsService,
     deleteLessonService,
+    addContentService,
 };
