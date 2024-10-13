@@ -16,7 +16,7 @@ const createLessonService = async (owner, name, description, content, course) =>
             owner: owner,
             name: name,
             description: description,
-            content: content,
+            content: content.path,
             course: course,
         });
         const courseId = course;
@@ -99,6 +99,23 @@ const addContentService = async (lessonId, content) => {
         return null;
     }
 };
+
+const getContentService = async (owner, lessonId) => {
+    try {
+        let result = await Lesson.findById(lessonId);
+        if (result && result.content) {
+            const contentPath = path.join(result.content);
+            const fileContent = fs.readFileSync(contentPath, 'utf8');
+            return fileContent;
+        } else {
+            console.log('Content not found');
+            return null;
+        }
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
 module.exports = {
     createLessonService,
     getLessonsInfoService,
@@ -106,4 +123,5 @@ module.exports = {
     getLessonsInfoByIdsService,
     deleteLessonService,
     addContentService,
+    getContentService,
 };

@@ -10,7 +10,13 @@ const {
     getCoursesInfoByIds,
     deleteCourse,
 } = require('../controllers/courseController');
-const { createLesson, getLessonInfo, getLessonsInfoByIds, addContent } = require('../controllers/lessonController');
+const {
+    createLesson,
+    getLessonInfo,
+    getLessonsInfoByIds,
+    addContent,
+    getContent,
+} = require('../controllers/lessonController');
 const { addCourseToTerm, removeCourseFromTerm } = require('../controllers/sharedController');
 const auth = require('../../middleware/auth');
 const delay = require('../../middleware/delay');
@@ -55,8 +61,9 @@ routerAPI.post('/get-courses-info-by-ids', getCoursesInfoByIds);
 routerAPI.post('/delete-course', deleteCourse);
 
 //Lesson
-routerAPI.post('/create-new-lesson', createLesson);
+routerAPI.post('/create-new-lesson', uploadContent.single('content'), createLesson);
 routerAPI.post('/add-content-to-lesson', uploadContent.single('content'), addContent);
+routerAPI.post('/get-lesson-content', getContent);
 // routerAPI.post('/create-new-course', uploadCover.single('cover'), createCourse);
 routerAPI.post('/get-lesson-info', getLessonInfo);
 // routerAPI.get('/get-courses-info', getCoursesInfo);

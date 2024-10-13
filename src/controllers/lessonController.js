@@ -5,6 +5,7 @@ const {
     getLessonsInfoByIdsService,
     deleteLessonService,
     addContentService,
+    getContentService,
 } = require('../services/lessonService');
 const { uploadAvatar } = require('../../middleware/multer');
 const jwt = require('jsonwebtoken');
@@ -12,7 +13,8 @@ const Tag = require('../models/tag');
 const Term = require('../models/term');
 
 const createLesson = async (req, res) => {
-    const { name, description, content, course } = req.body;
+    const content = req.file;
+    const { name, description, course } = req.body;
 
     const token = req.headers.authorization.split(' ')[1];
 
@@ -61,9 +63,22 @@ const getLessonsInfoByIds = async (req, res) => {
     return res.status(200).json(data);
 };
 
+const getContent = async (req, res) => {
+    const token = req.headers.authorization.split(' ')[1];
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const owner = decoded.name;
+
+    const { lessonId } = req.body;
+
+    const data = await getContentService(owner, lessonId);
+    return res.status(200).json(data);
+};
+
 module.exports = {
     createLesson,
     getLessonInfo,
     getLessonsInfoByIds,
     addContent,
+    getContent,
 };
