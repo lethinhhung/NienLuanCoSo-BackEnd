@@ -9,6 +9,7 @@ const { uploadAvatar } = require('../../middleware/multer');
 const jwt = require('jsonwebtoken');
 const Tag = require('../models/tag');
 const Term = require('../models/term');
+const { deleteLessonsByIdsService } = require('../services/lessonService');
 
 const createCourse = async (req, res) => {
     const { emoji, color, name, description, startDate, endDate, term } = req.body;
@@ -88,6 +89,9 @@ const deleteCourse = async (req, res) => {
     const { courseId } = req.body;
 
     const data = await deleteCourseService(owner, courseId);
+    const lessonsIds = data.lessons;
+    await deleteLessonsByIdsService(lessonsIds);
+
     return res.status(200).json(data);
 };
 

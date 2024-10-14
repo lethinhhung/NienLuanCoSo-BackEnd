@@ -130,6 +130,16 @@ const deleteLessonService = async (owner, lessonId) => {
         return null;
     }
 };
+
+const deleteLessonsByIdsService = async (lessonsIds) => {
+    try {
+        const result = await Lesson.deleteMany({ _id: { $in: lessonsIds } });
+        return result;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
 module.exports = {
     createLessonService,
     getLessonsInfoService,
@@ -138,4 +148,5 @@ module.exports = {
     deleteLessonService,
     addContentService,
     getContentService,
+    deleteLessonsByIdsService,
 };
