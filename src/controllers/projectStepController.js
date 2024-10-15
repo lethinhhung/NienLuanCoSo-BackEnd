@@ -1,8 +1,8 @@
 const { createProjectStepService, deleteProjectStepService } = require('../services/projectStepService');
 
 const createProjectStep = async (req, res) => {
-    const { name, status } = req.body;
-    const projectStep = await createProjectStepService(name, status);
+    const { name, status, projectId } = req.body;
+    const projectStep = await createProjectStepService(name, status, projectId);
     return res.status(200).json(projectStep);
 };
 

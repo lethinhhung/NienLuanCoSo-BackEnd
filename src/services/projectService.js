@@ -1,8 +1,14 @@
 const Project = require('../models/project');
+const ProjectStep = require('../models/projectStep');
+const Statistics = require('../models/statistics');
 
-const createProjectService = async (name, totalSteps, completedSteps, steps) => {
+const createProjectService = async (name, totalSteps, completedSteps, steps, statisticsId) => {
     try {
         const project = await Project.create({ name, totalSteps, completedSteps, steps });
+        const statistics = await Statistics.findById(statisticsId);
+        statistics.projects.push(project._id);
+        statistics.save();
+
         return project;
     } catch (error) {
         console.error(error);
@@ -12,11 +18,19 @@ const createProjectService = async (name, totalSteps, completedSteps, steps) => 
 
 const deleteProjectService = async (projectId) => {
     try {
-        await Project.findByIdAndDelete(projectId);
-        return true;
+        const project = await Project.findByIdAndDelete(projectId);
+
+        // Delete associated project steps
+        if (project.steps) {
+            for (const stepId of project.steps) {
+                await ProjectStep.findByIdAndDelete(stepId);
+            }
+        }
+
+        return project;
     } catch (error) {
-        console.error(error);
-        return false;
+        console.log(error);
+        return null;
     }
 };
 

@@ -1,5 +1,8 @@
 const Statistics = require('../models/statistics');
 
+const { deleteProjectService } = require('./projectService');
+const { deleteTestService } = require('./testService');
+
 const createStatisticsService = async (owner, course, tests, projects) => {
     try {
         const statistics = await Statistics.create({ owner, course, tests, projects });
@@ -12,11 +15,26 @@ const createStatisticsService = async (owner, course, tests, projects) => {
 
 const deleteStatisticsService = async (statisticsId) => {
     try {
-        await Statistics.findByIdAndDelete(statisticsId);
-        return true;
+        const statistics = await Statistics.findByIdAndDelete(statisticsId);
+
+        // Delete associated projects
+        if (statistics.projects) {
+            for (const projectId of statistics.projects) {
+                await deleteProjectService(projectId);
+            }
+        }
+
+        // Delete associated tests
+        if (statistics.tests) {
+            for (const testId of statistics.tests) {
+                await deleteTestService(testId);
+            }
+        }
+
+        return statistics;
     } catch (error) {
-        console.error(error);
-        return false;
+        console.log(error);
+        return null;
     }
 };
 

@@ -1,11 +1,13 @@
 require('dotenv').config();
 const Course = require('../models/course');
 const Term = require('../models/term');
+const Statistics = require('../models/statistics');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
 const { addCourseService, removeCourseService } = require('./sharedService');
+const { deleteStatisticsService } = require('./statisticsService');
 
 const createCourseService = async (
     owner,
@@ -35,6 +37,10 @@ const createCourseService = async (
 
         // save course
 
+        const statistics = await Statistics.create({
+            owner: owner,
+        });
+
         const result = await Course.create({
             owner: owner,
             emoji: emoji,
@@ -46,7 +52,9 @@ const createCourseService = async (
             startDate: new Date(startDate),
             endDate: new Date(endDate),
             term: term,
+            statistics: statistics._id,
         });
+
         const termId = term;
         const courseId = result._id;
 
@@ -112,6 +120,10 @@ const deleteCourseService = async (owner, courseId) => {
             const courseId = result._id;
             const kq = removeCourseService(termId, courseId);
             console.log('Delete ' + kq + ' successfully!');
+        }
+
+        if (result.statistics) {
+            await deleteStatisticsService(result.statistics);
         }
 
         return result;
