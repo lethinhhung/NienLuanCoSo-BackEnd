@@ -19,6 +19,11 @@ const {
     deleteLesson,
 } = require('../controllers/lessonController');
 const { addCourseToTerm, removeCourseFromTerm } = require('../controllers/sharedController');
+const { createProject, deleteProject } = require('../controllers/projectController');
+const { createProjectStep, deleteProjectStep } = require('../controllers/projectStepController');
+const { createTest, deleteTest } = require('../controllers/testController');
+const { createStatistics, deleteStatistics } = require('../controllers/statisticsController');
+
 const auth = require('../../middleware/auth');
 const delay = require('../../middleware/delay');
 const { uploadAvatar, uploadCover, uploadContent } = require('../../middleware/multer');
@@ -70,5 +75,21 @@ routerAPI.post('/get-lesson-info', getLessonInfo);
 // routerAPI.get('/get-courses-info', getCoursesInfo);
 routerAPI.post('/get-lessons-info-by-ids', getLessonsInfoByIds);
 routerAPI.post('/delete-lesson', deleteLesson);
+
+//Project
+routerAPI.post('/create-new-project', createProject);
+routerAPI.post('/delete-project', deleteProject);
+
+//ProjectStep
+routerAPI.post('/create-new-project-step', createProjectStep);
+routerAPI.post('/delete-project-step', deleteProjectStep);
+
+//Test
+routerAPI.post('/create-new-test', createTest);
+routerAPI.post('/delete-test', deleteTest);
+
+//Statistics
+routerAPI.post('/create-new-statistics', createStatistics);
+routerAPI.post('/delete-statistics', deleteStatistics);
 
 module.exports = routerAPI; //export default

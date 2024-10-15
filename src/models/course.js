@@ -12,6 +12,7 @@ const courseSchema = new mongoose.Schema({
     endDate: Date,
     term: { type: mongoose.Schema.Types.ObjectId, ref: 'term' },
     lessons: [{ type: mongoose.Schema.Types.ObjectId, ref: 'lesson' }],
+    statistics: { type: mongoose.Schema.Types.ObjectId, ref: 'statistics' },
 });
 
 const Course = mongoose.model('course', courseSchema);
