@@ -1,4 +1,8 @@
-const { createStatisticsService, deleteStatisticsService } = require('../services/statisticsService');
+const {
+    createStatisticsService,
+    deleteStatisticsService,
+    getStatisticsInfoService,
+} = require('../services/statisticsService');
 
 const createStatistics = async (req, res) => {
     const { owner, course, tests, projects } = req.body;
@@ -12,7 +16,14 @@ const deleteStatistics = async (req, res) => {
     return res.status(200).json({ success });
 };
 
+const getStatisticsInfo = async (req, res) => {
+    const { statisticsId } = req.body;
+    const statistics = await getStatisticsInfoService(statisticsId);
+    return res.status(200).json(statistics);
+};
+
 module.exports = {
     createStatistics,
     deleteStatistics,
+    getStatisticsInfo,
 };

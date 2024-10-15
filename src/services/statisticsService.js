@@ -38,7 +38,18 @@ const deleteStatisticsService = async (statisticsId) => {
     }
 };
 
+const getStatisticsInfoService = async (statisticsId) => {
+    try {
+        const statistics = await Statistics.findById(statisticsId);
+        return statistics;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+};
+
 module.exports = {
     createStatisticsService,
     deleteStatisticsService,
+    getStatisticsInfoService,
 };

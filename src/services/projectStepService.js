@@ -26,7 +26,29 @@ const deleteProjectStepService = async (projectStepId) => {
     }
 };
 
+const getProjectStepInfoService = async (projectStepId) => {
+    try {
+        const projectStep = await ProjectStep.findById(projectStepId);
+        return projectStep;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+};
+
+const getProjectStepsInfoByIdsService = async (owner, projectStepsIds) => {
+    try {
+        let result = await ProjectStep.find({ _id: { $in: projectStepsIds } });
+        return result;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+};
+
 module.exports = {
     createProjectStepService,
     deleteProjectStepService,
+    getProjectStepInfoService,
+    getProjectStepsInfoByIdsService,
 };

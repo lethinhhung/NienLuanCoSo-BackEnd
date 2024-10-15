@@ -34,7 +34,29 @@ const deleteProjectService = async (projectId) => {
     }
 };
 
+const getProjectInfoService = async (projectId) => {
+    try {
+        const project = await Project.findById(projectId);
+        return project;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+};
+
+const getProjectsInfoByIdsService = async (owner, projectsIds) => {
+    try {
+        let result = await Project.find({ _id: { $in: projectsIds } });
+        return result;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+};
+
 module.exports = {
     createProjectService,
     deleteProjectService,
+    getProjectInfoService,
+    getProjectsInfoByIdsService,
 };

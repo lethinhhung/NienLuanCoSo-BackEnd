@@ -25,7 +25,29 @@ const deleteTestService = async (testId) => {
     }
 };
 
+const getTestInfoService = async (testId) => {
+    try {
+        const test = await Test.findById(testId);
+        return test;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+};
+
+const getTestsInfoByIdsService = async (owner, testsIds) => {
+    try {
+        let result = await Test.find({ _id: { $in: testsIds } });
+        return result;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+};
+
 module.exports = {
     createTestService,
     deleteTestService,
+    getTestInfoService,
+    getTestsInfoByIdsService,
 };

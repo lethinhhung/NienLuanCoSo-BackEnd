@@ -1,4 +1,9 @@
-const { createProjectStepService, deleteProjectStepService } = require('../services/projectStepService');
+const {
+    createProjectStepService,
+    deleteProjectStepService,
+    getProjectStepInfoService,
+    getProjectStepsInfoByIdsService,
+} = require('../services/projectStepService');
 
 const createProjectStep = async (req, res) => {
     const { name, status, projectId } = req.body;
@@ -12,7 +17,21 @@ const deleteProjectStep = async (req, res) => {
     return res.status(200).json({ success });
 };
 
+const getProjectStepInfo = async (req, res) => {
+    const { projectStepId } = req.body;
+    const projectStep = await getProjectStepInfoService(projectStepId);
+    return res.status(200).json(projectStep);
+};
+
+const getProjectStepsInfoByIds = async (req, res) => {
+    const { owner, projectStepsIds } = req.body;
+    const projectSteps = await getProjectStepsInfoByIdsService(owner, projectStepsIds);
+    return res.status(200).json(projectSteps);
+};
+
 module.exports = {
     createProjectStep,
     deleteProjectStep,
+    getProjectStepInfo,
+    getProjectStepsInfoByIds,
 };

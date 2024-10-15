@@ -1,4 +1,9 @@
-const { createProjectService, deleteProjectService } = require('../services/projectService');
+const {
+    createProjectService,
+    deleteProjectService,
+    getProjectInfoService,
+    getProjectsInfoByIdsService,
+} = require('../services/projectService');
 
 const createProject = async (req, res) => {
     const { name, totalSteps, completedSteps, steps, statisticsId } = req.body;
@@ -12,7 +17,21 @@ const deleteProject = async (req, res) => {
     return res.status(200).json({ success });
 };
 
+const getProjectInfo = async (req, res) => {
+    const { projectId } = req.body;
+    const project = await getProjectInfoService(projectId);
+    return res.status(200).json(project);
+};
+
+const getProjectsInfoByIds = async (req, res) => {
+    const { owner, projectsIds } = req.body;
+    const projects = await getProjectsInfoByIdsService(owner, projectsIds);
+    return res.status(200).json(projects);
+};
+
 module.exports = {
     createProject,
     deleteProject,
+    getProjectInfo,
+    getProjectsInfoByIds,
 };

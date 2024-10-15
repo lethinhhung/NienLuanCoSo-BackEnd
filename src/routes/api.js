@@ -19,10 +19,20 @@ const {
     deleteLesson,
 } = require('../controllers/lessonController');
 const { addCourseToTerm, removeCourseFromTerm } = require('../controllers/sharedController');
-const { createProject, deleteProject } = require('../controllers/projectController');
-const { createProjectStep, deleteProjectStep } = require('../controllers/projectStepController');
-const { createTest, deleteTest } = require('../controllers/testController');
-const { createStatistics, deleteStatistics } = require('../controllers/statisticsController');
+const { createStatistics, deleteStatistics, getStatisticsInfo } = require('../controllers/statisticsController');
+const {
+    createProject,
+    deleteProject,
+    getProjectInfo,
+    getProjectsInfoByIds,
+} = require('../controllers/projectController');
+const {
+    createProjectStep,
+    deleteProjectStep,
+    getProjectStepInfo,
+    getProjectStepsInfoByIds,
+} = require('../controllers/projectStepController');
+const { createTest, deleteTest, getTestInfo, getTestsInfoByIds } = require('../controllers/testController');
 
 const auth = require('../../middleware/auth');
 const delay = require('../../middleware/delay');
@@ -76,20 +86,27 @@ routerAPI.post('/get-lesson-info', getLessonInfo);
 routerAPI.post('/get-lessons-info-by-ids', getLessonsInfoByIds);
 routerAPI.post('/delete-lesson', deleteLesson);
 
-//Project
-routerAPI.post('/create-new-project', createProject);
-routerAPI.post('/delete-project', deleteProject);
-
-//ProjectStep
-routerAPI.post('/create-new-project-step', createProjectStep);
-routerAPI.post('/delete-project-step', deleteProjectStep);
-
-//Test
-routerAPI.post('/create-new-test', createTest);
-routerAPI.post('/delete-test', deleteTest);
-
-//Statistics
+// Statistics
 routerAPI.post('/create-new-statistics', createStatistics);
 routerAPI.post('/delete-statistics', deleteStatistics);
+routerAPI.post('/get-statistics-info', getStatisticsInfo);
+
+// Project
+routerAPI.post('/create-new-project', createProject);
+routerAPI.post('/delete-project', deleteProject);
+routerAPI.post('/get-project-info', getProjectInfo);
+routerAPI.post('/get-projects-info-by-ids', getProjectsInfoByIds);
+
+// ProjectStep
+routerAPI.post('/create-new-project-step', createProjectStep);
+routerAPI.post('/delete-project-step', deleteProjectStep);
+routerAPI.post('/get-project-step-info', getProjectStepInfo);
+routerAPI.post('/get-project-steps-info-by-ids', getProjectStepsInfoByIds);
+
+// Test
+routerAPI.post('/create-new-test', createTest);
+routerAPI.post('/delete-test', deleteTest);
+routerAPI.post('/get-test-info', getTestInfo);
+routerAPI.post('/get-tests-info-by-ids', getTestsInfoByIds);
 
 module.exports = routerAPI; //export default

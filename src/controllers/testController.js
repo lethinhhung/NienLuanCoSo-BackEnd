@@ -1,4 +1,9 @@
-const { createTestService, deleteTestService } = require('../services/testService');
+const {
+    createTestService,
+    deleteTestService,
+    getTestInfoService,
+    getTestsInfoByIdsService,
+} = require('../services/testService');
 
 const createTest = async (req, res) => {
     const { name, gradeWeight, maxScore, score, statisticsId } = req.body;
@@ -12,7 +17,21 @@ const deleteTest = async (req, res) => {
     return res.status(200).json({ success });
 };
 
+const getTestInfo = async (req, res) => {
+    const { testId } = req.body;
+    const test = await getTestInfoService(testId);
+    return res.status(200).json(test);
+};
+
+const getTestsInfoByIds = async (req, res) => {
+    const { owner, testsIds } = req.body;
+    const tests = await getTestsInfoByIdsService(owner, testsIds);
+    return res.status(200).json(tests);
+};
+
 module.exports = {
     createTest,
     deleteTest,
+    getTestInfo,
+    getTestsInfoByIds,
 };
