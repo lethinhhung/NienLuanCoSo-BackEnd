@@ -5,7 +5,20 @@ const { deleteTestService } = require('./testService');
 
 const createStatisticsService = async (owner, course, tests, projects) => {
     try {
-        const statistics = await Statistics.create({ owner, course, tests, projects });
+        const completedGradeWeight = 0;
+        const completedScore = 0;
+        const completedProjects = 0;
+        const totalProjects = 0;
+        const statistics = await Statistics.create({
+            owner,
+            course,
+            tests,
+            projects,
+            completedGradeWeight,
+            completedScore,
+            completedProjects,
+            totalProjects,
+        });
         return statistics;
     } catch (error) {
         console.error(error);

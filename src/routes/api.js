@@ -32,11 +32,18 @@ const {
     getProjectStepInfo,
     getProjectStepsInfoByIds,
 } = require('../controllers/projectStepController');
-const { createTest, deleteTest, getTestInfo, getTestsInfoByIds } = require('../controllers/testController');
+const {
+    createTest,
+    deleteTest,
+    getTestInfo,
+    getTestsInfoByIds,
+    updateTestScore,
+} = require('../controllers/testController');
 
 const auth = require('../../middleware/auth');
 const delay = require('../../middleware/delay');
 const { uploadAvatar, uploadCover, uploadContent } = require('../../middleware/multer');
+const { updateTestScoreService } = require('../services/testService');
 
 const routerAPI = express.Router();
 
@@ -108,5 +115,6 @@ routerAPI.post('/create-new-test', createTest);
 routerAPI.post('/delete-test', deleteTest);
 routerAPI.post('/get-test-info', getTestInfo);
 routerAPI.post('/get-tests-info-by-ids', getTestsInfoByIds);
+routerAPI.post('/update-test-score', updateTestScore);
 
 module.exports = routerAPI; //export default

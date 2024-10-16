@@ -6,7 +6,9 @@ const createProjectService = async (name, totalSteps, completedSteps, steps, sta
     try {
         const project = await Project.create({ name, totalSteps, completedSteps, steps });
         const statistics = await Statistics.findById(statisticsId);
+
         statistics.projects.push(project._id);
+        statistics.totalProjects += 1;
         statistics.save();
 
         return project;
@@ -54,9 +56,38 @@ const getProjectsInfoByIdsService = async (owner, projectsIds) => {
     }
 };
 
+const updateProjectCompletionService = async (projectId) => {
+    try {
+        const project = await Project.findById(projectId);
+        const statistics = await Statistics.findOne({ projects: projectId });
+
+        if (!project || !statistics) return null;
+
+        const wasCompleted = project.completedSteps === project.totalSteps;
+        project.completedSteps = project.steps.filter((step) => step.status).length;
+        await project.save();
+
+        const isCompleted = project.completedSteps === project.totalSteps;
+
+        if (!wasCompleted && isCompleted) {
+            statistics.completedProjects += 1;
+        } else if (wasCompleted && !isCompleted) {
+            statistics.completedProjects -= 1;
+        }
+
+        await statistics.save();
+
+        return project;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+};
+
 module.exports = {
     createProjectService,
     deleteProjectService,
     getProjectInfoService,
     getProjectsInfoByIdsService,
+    updateProjectCompletionService,
 };

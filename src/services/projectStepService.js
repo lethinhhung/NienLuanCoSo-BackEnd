@@ -7,6 +7,7 @@ const createProjectStepService = async (name, status, projectId) => {
         const project = await Project.findById(projectId);
 
         project.steps.push(projectStep._id);
+        project.totalSteps += 1;
         project.save();
 
         return projectStep;
@@ -18,7 +19,15 @@ const createProjectStepService = async (name, status, projectId) => {
 
 const deleteProjectStepService = async (projectStepId) => {
     try {
-        await ProjectStep.findByIdAndDelete(projectStepId);
+        const projectStep = await ProjectStep.findByIdAndDelete(projectStepId);
+        const project = await Project.findOne({ steps: projectStepId });
+
+        if (project) {
+            project.steps.pull(projectStepId);
+            project.totalSteps -= 1;
+            project.save();
+        }
+
         return true;
     } catch (error) {
         console.error(error);

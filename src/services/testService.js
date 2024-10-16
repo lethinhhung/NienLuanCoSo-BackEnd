@@ -45,9 +45,47 @@ const getTestsInfoByIdsService = async (owner, testsIds) => {
     }
 };
 
+const updateTestScoreService = async (testId, newScore) => {
+    try {
+        const test = await Test.findById(testId);
+        const statistics = await Statistics.findOne({ tests: testId });
+
+        if (!test || !statistics) return null;
+
+        const oldScore = test.score;
+        const oldCompletedScore = statistics.completedScore;
+        test.score = newScore;
+        await test.save();
+
+        // const completedTestIds = statistics.tests.filter((tId) => tId.toString() !== testId.toString());
+        // const completedTests = await Test.find({ _id: { $in: completedTestIds }, score: { $ne: -1 } });
+
+        // const completedGradeWeight = completedTests.reduce((sum, t) => sum + t.gradeWeight, 0);
+        // const completedScore = completedTests.reduce((sum, t) => sum + (t.score / t.maxScore) * t.gradeWeight, 0);
+        if (oldScore === -1) {
+            statistics.completedGradeWeight = statistics.completedGradeWeight + test.gradeWeight;
+            statistics.completedScore = oldCompletedScore + (newScore / test.maxScore) * test.gradeWeight;
+            await statistics.save();
+        } else {
+            statistics.completedScore =
+                oldCompletedScore -
+                (oldScore / test.maxScore) * test.gradeWeight +
+                (newScore / test.maxScore) * test.gradeWeight;
+
+            await statistics.save();
+        }
+
+        return test;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+};
+
 module.exports = {
     createTestService,
     deleteTestService,
     getTestInfoService,
     getTestsInfoByIdsService,
+    updateTestScoreService,
 };

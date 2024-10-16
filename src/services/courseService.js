@@ -7,7 +7,8 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
 const { addCourseService, removeCourseService } = require('./sharedService');
-const { deleteStatisticsService } = require('./statisticsService');
+const { deleteStatisticsService, createStatisticsService } = require('./statisticsService');
+const { createStatistics } = require('../controllers/statisticsController');
 
 const createCourseService = async (
     owner,
@@ -37,9 +38,7 @@ const createCourseService = async (
 
         // save course
 
-        const statistics = await Statistics.create({
-            owner: owner,
-        });
+        const statistics = await createStatisticsService(owner);
 
         const result = await Course.create({
             owner: owner,

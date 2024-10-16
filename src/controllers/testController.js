@@ -3,6 +3,7 @@ const {
     deleteTestService,
     getTestInfoService,
     getTestsInfoByIdsService,
+    updateTestScoreService,
 } = require('../services/testService');
 
 const createTest = async (req, res) => {
@@ -29,9 +30,16 @@ const getTestsInfoByIds = async (req, res) => {
     return res.status(200).json(tests);
 };
 
+const updateTestScore = async (req, res) => {
+    const { testId, newScore } = req.body;
+    const tests = await updateTestScoreService(testId, newScore);
+    return res.status(200).json(tests);
+};
+
 module.exports = {
     createTest,
     deleteTest,
     getTestInfo,
     getTestsInfoByIds,
+    updateTestScore,
 };
