@@ -29,6 +29,13 @@ const deleteProjectService = async (projectId) => {
             }
         }
 
+        const statistics = await Statistics.findOne({ projects: projectId });
+        if (statistics) {
+            statistics.projects.pull(projectId);
+            statistics.totalProjects -= 1;
+            await statistics.save();
+        }
+
         return project;
     } catch (error) {
         console.log(error);

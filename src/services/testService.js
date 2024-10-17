@@ -17,7 +17,22 @@ const createTestService = async (name, gradeWeight, maxScore, score, statisticsI
 
 const deleteTestService = async (testId) => {
     try {
+        // Find and delete the test
         const test = await Test.findByIdAndDelete(testId);
+        if (!test) return null;
+
+        // Find the statistics document that contains the test ID
+        const statistics = await Statistics.findOne({ tests: testId });
+        if (statistics) {
+            // Remove the test ID from the tests array
+            statistics.tests = statistics.tests.filter((tId) => tId.toString() !== testId.toString());
+            if (test.score !== -1) {
+                statistics.completedGradeWeight -= test.gradeWeight;
+                statistics.completedScore -= (test.score / test.maxScore) * test.gradeWeight;
+            }
+            await statistics.save();
+        }
+
         return test;
     } catch (error) {
         console.log(error);
