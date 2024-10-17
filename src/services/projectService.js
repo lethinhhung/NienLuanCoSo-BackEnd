@@ -53,7 +53,7 @@ const getProjectInfoService = async (projectId) => {
     }
 };
 
-const getProjectsInfoByIdsService = async (owner, projectsIds) => {
+const getProjectsInfoByIdsService = async (projectsIds) => {
     try {
         let result = await Project.find({ _id: { $in: projectsIds } });
         return result;

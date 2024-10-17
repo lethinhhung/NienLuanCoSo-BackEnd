@@ -24,8 +24,8 @@ const getProjectInfo = async (req, res) => {
 };
 
 const getProjectsInfoByIds = async (req, res) => {
-    const { owner, projectsIds } = req.body;
-    const projects = await getProjectsInfoByIdsService(owner, projectsIds);
+    const { projectsIds } = req.body;
+    const projects = await getProjectsInfoByIdsService(projectsIds);
     return res.status(200).json(projects);
 };
 

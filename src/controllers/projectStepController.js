@@ -7,7 +7,8 @@ const {
 } = require('../services/projectStepService');
 
 const createProjectStep = async (req, res) => {
-    const { name, status, projectId } = req.body;
+    const { name, projectId } = req.body;
+    const status = 'false';
     const projectStep = await createProjectStepService(name, status, projectId);
     return res.status(200).json(projectStep);
 };
