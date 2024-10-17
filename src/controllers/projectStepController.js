@@ -3,6 +3,7 @@ const {
     deleteProjectStepService,
     getProjectStepInfoService,
     getProjectStepsInfoByIdsService,
+    updateProjectStepService,
 } = require('../services/projectStepService');
 
 const createProjectStep = async (req, res) => {
@@ -29,9 +30,16 @@ const getProjectStepsInfoByIds = async (req, res) => {
     return res.status(200).json(projectSteps);
 };
 
+const updateProjectStep = async (req, res) => {
+    const { projectStepId, status } = req.body;
+    const projectSteps = await updateProjectStepService(projectStepId, status);
+    return res.status(200).json(projectSteps);
+};
+
 module.exports = {
     createProjectStep,
     deleteProjectStep,
     getProjectStepInfo,
     getProjectStepsInfoByIds,
+    updateProjectStep,
 };

@@ -1,14 +1,21 @@
 const ProjectStep = require('../models/projectStep');
 const Project = require('../models/project');
+const Statistics = require('../models/statistics');
+const { updateProjectCompletionService } = require('./projectService');
 
 const createProjectStepService = async (name, status, projectId) => {
     try {
-        const projectStep = await ProjectStep.create({ name, status });
         const project = await Project.findById(projectId);
+        if (!project) return null;
+
+        const projectStep = await ProjectStep.create({ name, status });
 
         project.steps.push(projectStep._id);
         project.totalSteps += 1;
         project.save();
+
+        //Update statistic completed projects
+        await updateProjectCompletionService(projectId);
 
         return projectStep;
     } catch (error) {
@@ -25,8 +32,14 @@ const deleteProjectStepService = async (projectStepId) => {
         if (project) {
             project.steps.pull(projectStepId);
             project.totalSteps -= 1;
+            if (projectStep.status === true) {
+                project.completedSteps -= 1;
+            }
             project.save();
         }
+        //Update statistic completed projects
+        const projectId = project._id;
+        await updateProjectCompletionService(projectId);
 
         return true;
     } catch (error) {
@@ -55,9 +68,40 @@ const getProjectStepsInfoByIdsService = async (owner, projectStepsIds) => {
     }
 };
 
+const updateProjectStepService = async (projectStepId, status) => {
+    try {
+        const project = await Project.findOne({ steps: projectStepId });
+        if (!project) return null;
+
+        // Update project completed steps
+        const projectStep = await ProjectStep.findById(projectStepId);
+        if (projectStep.status.toString() !== status) {
+            if (status === 'true') {
+                project.completedSteps += 1;
+            } else {
+                project.completedSteps -= 1;
+            }
+            await project.save();
+
+            //Update statistic completed projects
+            const projectId = project._id;
+            await updateProjectCompletionService(projectId);
+        }
+        projectStep.status = status;
+
+        await projectStep.save();
+
+        return projectStep;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+};
+
 module.exports = {
     createProjectStepService,
     deleteProjectStepService,
     getProjectStepInfoService,
     getProjectStepsInfoByIdsService,
+    updateProjectStepService,
 };

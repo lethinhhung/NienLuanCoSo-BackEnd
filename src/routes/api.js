@@ -31,6 +31,7 @@ const {
     deleteProjectStep,
     getProjectStepInfo,
     getProjectStepsInfoByIds,
+    updateProjectStep,
 } = require('../controllers/projectStepController');
 const {
     createTest,
@@ -43,7 +44,6 @@ const {
 const auth = require('../../middleware/auth');
 const delay = require('../../middleware/delay');
 const { uploadAvatar, uploadCover, uploadContent } = require('../../middleware/multer');
-const { updateTestScoreService } = require('../services/testService');
 
 const routerAPI = express.Router();
 
@@ -109,6 +109,7 @@ routerAPI.post('/create-new-project-step', createProjectStep);
 routerAPI.post('/delete-project-step', deleteProjectStep);
 routerAPI.post('/get-project-step-info', getProjectStepInfo);
 routerAPI.post('/get-project-steps-info-by-ids', getProjectStepsInfoByIds);
+routerAPI.post('/update-project-step', updateProjectStep);
 
 // Test
 routerAPI.post('/create-new-test', createTest);

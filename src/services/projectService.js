@@ -65,26 +65,27 @@ const getProjectsInfoByIdsService = async (owner, projectsIds) => {
 
 const updateProjectCompletionService = async (projectId) => {
     try {
-        const project = await Project.findById(projectId);
         const statistics = await Statistics.findOne({ projects: projectId });
 
-        if (!project || !statistics) return null;
+        if (!statistics) return null;
+        const projectsIds = statistics.projects;
+        const projects = await Project.find({ _id: { $in: projectsIds } });
+        if (!projects) return null;
 
-        const wasCompleted = project.completedSteps === project.totalSteps;
-        project.completedSteps = project.steps.filter((step) => step.status).length;
-        await project.save();
+        let completedCount = 0;
+        console.log(projects);
 
-        const isCompleted = project.completedSteps === project.totalSteps;
+        projects.forEach((project) => {
+            if (project.completedSteps === project.totalSteps) {
+                completedCount++;
+            }
+        });
 
-        if (!wasCompleted && isCompleted) {
-            statistics.completedProjects += 1;
-        } else if (wasCompleted && !isCompleted) {
-            statistics.completedProjects -= 1;
-        }
+        statistics.completedProjects = completedCount;
 
         await statistics.save();
 
-        return project;
+        return statistics;
     } catch (error) {
         console.error(error);
         return null;
