@@ -3,12 +3,14 @@ const Statistics = require('../models/statistics');
 
 const createTestService = async (name, gradeWeight, maxScore, score, statisticsId) => {
     try {
-        const test = await Test.create({ name, gradeWeight, maxScore, score });
-        const statistics = await Statistics.findById(statisticsId);
-        statistics.tests.push(test._id);
-        statistics.save();
+        {
+            const test = await Test.create({ name, gradeWeight, maxScore, score });
+            const statistics = await Statistics.findById(statisticsId);
+            statistics.tests.push(test._id);
+            statistics.save();
 
-        return test;
+            return test;
+        }
     } catch (error) {
         console.error(error);
         return null;
