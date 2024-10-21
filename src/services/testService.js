@@ -1,9 +1,10 @@
 const Test = require('../models/test');
 const Statistics = require('../models/statistics');
 
-const createTestService = async (name, gradeWeight, maxScore, score, statisticsId) => {
+const createTestService = async (name, gradeWeight, maxScore, statisticsId) => {
     try {
         {
+            const score = -1;
             const test = await Test.create({ name, gradeWeight, maxScore, score });
             const statistics = await Statistics.findById(statisticsId);
             statistics.tests.push(test._id);
@@ -74,11 +75,6 @@ const updateTestScoreService = async (testId, newScore) => {
         test.score = newScore;
         await test.save();
 
-        // const completedTestIds = statistics.tests.filter((tId) => tId.toString() !== testId.toString());
-        // const completedTests = await Test.find({ _id: { $in: completedTestIds }, score: { $ne: -1 } });
-
-        // const completedGradeWeight = completedTests.reduce((sum, t) => sum + t.gradeWeight, 0);
-        // const completedScore = completedTests.reduce((sum, t) => sum + (t.score / t.maxScore) * t.gradeWeight, 0);
         if (oldScore === -1) {
             statistics.completedGradeWeight = statistics.completedGradeWeight + test.gradeWeight;
             statistics.completedScore = oldCompletedScore + (newScore / test.maxScore) * test.gradeWeight;
@@ -99,10 +95,47 @@ const updateTestScoreService = async (testId, newScore) => {
     }
 };
 
+const updateTestInfoService = async (testId, name, gradeWeight, maxScore, score) => {
+    try {
+        const test = await Test.findById(testId);
+
+        // Cap nhat statistics cu
+        if (test.score !== -1) {
+            const statistics = await Statistics.findOne({ tests: testId });
+            statistics.completedGradeWeight = statistics.completedGradeWeight - (test.gradeWeight - gradeWeight);
+            statistics.completedScore =
+                statistics.completedScore -
+                (test.score / test.maxScore) * test.gradeWeight +
+                (score / maxScore) * gradeWeight;
+            await statistics.save();
+        } else {
+            const statistics = await Statistics.findOne({ tests: testId });
+            statistics.completedGradeWeight += gradeWeight;
+            statistics.completedScore += (score / maxScore) * test.gradeWeight;
+            await statistics.save();
+        }
+
+        // Cap nhat test moi
+        test.name = name;
+        test.gradeWeight = gradeWeight;
+        test.maxScore = maxScore;
+        test.score = score;
+        await test.save();
+
+        // Cap nhat statistics moi
+
+        return test;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+};
+
 module.exports = {
     createTestService,
     deleteTestService,
     getTestInfoService,
     getTestsInfoByIdsService,
     updateTestScoreService,
+    updateTestInfoService,
 };

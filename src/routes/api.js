@@ -39,6 +39,7 @@ const {
     getTestInfo,
     getTestsInfoByIds,
     updateTestScore,
+    updateTestInfo,
 } = require('../controllers/testController');
 
 const auth = require('../../middleware/auth');
@@ -117,5 +118,6 @@ routerAPI.post('/delete-test', deleteTest);
 routerAPI.post('/get-test-info', getTestInfo);
 routerAPI.post('/get-tests-info-by-ids', getTestsInfoByIds);
 routerAPI.post('/update-test-score', updateTestScore);
+routerAPI.post('/update-test-info', updateTestInfo);
 
 module.exports = routerAPI; //export default
