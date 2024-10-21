@@ -12,6 +12,7 @@ const createProjectStepService = async (name, status, projectId) => {
 
         project.steps.push(projectStep._id);
         project.totalSteps += 1;
+        if (status === 'true') project.completedSteps += 1;
         project.save();
 
         //Update statistic completed projects
@@ -68,13 +69,14 @@ const getProjectStepsInfoByIdsService = async (owner, projectStepsIds) => {
     }
 };
 
-const updateProjectStepService = async (projectStepId, status) => {
+const updateProjectStepService = async (projectStepId, status, name) => {
     try {
         const project = await Project.findOne({ steps: projectStepId });
         if (!project) return null;
 
         // Update project completed steps
         const projectStep = await ProjectStep.findById(projectStepId);
+
         if (projectStep.status.toString() !== status) {
             if (status === 'true') {
                 project.completedSteps += 1;
@@ -84,12 +86,14 @@ const updateProjectStepService = async (projectStepId, status) => {
             await project.save();
 
             //Update statistic completed projects
-            const projectId = project._id;
-            await updateProjectCompletionService(projectId);
         }
+        projectStep.name = name;
         projectStep.status = status;
 
         await projectStep.save();
+
+        const projectId = project._id;
+        await updateProjectCompletionService(projectId);
 
         return projectStep;
     } catch (error) {
