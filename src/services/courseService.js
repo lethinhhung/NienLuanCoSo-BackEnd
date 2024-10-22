@@ -9,6 +9,7 @@ const path = require('path');
 const { addCourseService, removeCourseService } = require('./sharedService');
 const { deleteStatisticsService, createStatisticsService } = require('./statisticsService');
 const { createStatistics } = require('../controllers/statisticsController');
+const { getTermInfoService } = require('./termService');
 
 const createCourseService = async (
     owner,
@@ -38,6 +39,14 @@ const createCourseService = async (
 
         // save course
 
+        const termId = term;
+        if (startDate === '0000-01-02' && endDate === '0000-01-01') {
+            const termResult = await getTermInfoService(termId);
+
+            startDate = termResult.startDate;
+            endDate = termResult.endDate;
+        }
+
         const statistics = await createStatisticsService(owner);
 
         const result = await Course.create({
@@ -54,7 +63,6 @@ const createCourseService = async (
             statistics: statistics._id,
         });
 
-        const termId = term;
         const courseId = result._id;
 
         const kq = await addCourseService(termId, courseId);

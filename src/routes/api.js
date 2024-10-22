@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const { createUser, handleLogin, getAccountInfo, updateUser } = require('../controllers/userController');
 const { createTag, getTagsInfo, getTagsInfoByIds } = require('../controllers/tagController');
-const { createTerm, getTermsInfo, getTermInfo, deleteTerm } = require('../controllers/termController');
+const { createTerm, getTermsInfo, getTermInfo, deleteTerm, updateTerm } = require('../controllers/termController');
 const {
     createCourse,
     getCourseInfo,
@@ -77,6 +77,7 @@ routerAPI.post('/get-term-info', getTermInfo);
 routerAPI.post('/delete-term', deleteTerm);
 routerAPI.post('/add-course-to-term-by-id', addCourseToTerm);
 routerAPI.post('/remove-course-from-term-by-id', removeCourseFromTerm);
+routerAPI.post('/update-term-info', uploadCover.single('cover'), updateTerm);
 
 //Course
 routerAPI.post('/create-new-course', uploadCover.single('cover'), createCourse);

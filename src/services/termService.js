@@ -51,7 +51,7 @@ const getTermsInfoService = async (owner) => {
     }
 };
 
-const getTermInfoService = async (owner, termId) => {
+const getTermInfoService = async (termId) => {
     try {
         let result = await Term.findById(termId);
         return result;
@@ -91,6 +91,49 @@ const deleteTermService = async (owner, termId) => {
     }
 };
 
+const updateTermService = async (owner, emoji, color, cover, name, description, startDate, endDate, termId) => {
+    try {
+        const term = await Term.findById(termId);
+        if (!term) {
+            return {
+                EC: 0,
+                EM: 'Term not found',
+            };
+        }
+
+        if (cover && term.cover) {
+            const oldCoverPath = path.join(term.cover);
+            fs.unlink(oldCoverPath, (err) => {
+                if (err) {
+                    console.error(`Failed to delete old cover: ${err.message}`);
+                } else {
+                    console.log('Old cover deleted successfully');
+                }
+            });
+        }
+
+        const updatedTerm = await Term.findByIdAndUpdate(
+            termId,
+            {
+                owner: owner,
+                emoji: emoji,
+                color: color,
+                cover: cover ? cover.path : term.cover,
+                name: name,
+                description: description,
+                startDate: new Date(startDate),
+                endDate: new Date(endDate),
+            },
+            { new: true },
+        );
+
+        return { result: updatedTerm };
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
+
 module.exports = {
     createTermService,
     getTermsInfoService,
@@ -98,4 +141,5 @@ module.exports = {
     addCourseService,
     removeCourseService,
     deleteTermService,
+    updateTermService,
 };
