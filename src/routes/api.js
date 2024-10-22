@@ -9,6 +9,7 @@ const {
     getCoursesInfo,
     getCoursesInfoByIds,
     deleteCourse,
+    updateCourse,
 } = require('../controllers/courseController');
 const {
     createLesson,
@@ -83,6 +84,7 @@ routerAPI.post('/get-course-info', getCourseInfo);
 routerAPI.get('/get-courses-info', getCoursesInfo);
 routerAPI.post('/get-courses-info-by-ids', getCoursesInfoByIds);
 routerAPI.post('/delete-course', deleteCourse);
+routerAPI.post('/update-course-info', uploadCover.single('cover'), updateCourse);
 
 //Lesson
 routerAPI.post('/create-new-lesson', uploadContent.single('content'), createLesson);

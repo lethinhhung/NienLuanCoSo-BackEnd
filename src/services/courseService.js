@@ -132,10 +132,68 @@ const deleteCourseService = async (owner, courseId) => {
     }
 };
 
+const updateCourseService = async (
+    owner,
+    emoji,
+    color,
+    cover,
+    name,
+    description,
+    tagsIds,
+    startDate,
+    endDate,
+    term,
+    courseId,
+) => {
+    try {
+        const course = await Course.findById(courseId);
+        if (!course) {
+            return {
+                EC: 0,
+                EM: 'Course not found',
+            };
+        }
+
+        if (cover && course.cover) {
+            const oldCoverPath = path.join(course.cover);
+            fs.unlink(oldCoverPath, (err) => {
+                if (err) {
+                    console.error(`Failed to delete old cover: ${err.message}`);
+                } else {
+                    console.log('Old cover deleted successfully');
+                }
+            });
+        }
+
+        const updatedCourse = await Course.findByIdAndUpdate(
+            courseId,
+            {
+                owner: owner,
+                emoji: emoji,
+                color: color,
+                cover: cover ? cover.path : course.cover,
+                name: name,
+                description: description,
+                tags: tagsIds,
+                startDate: new Date(startDate),
+                endDate: new Date(endDate),
+                term: term,
+            },
+            { new: true },
+        );
+
+        return { result: updatedCourse };
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
+
 module.exports = {
     createCourseService,
     getCoursesInfoService,
     getCourseInfoService,
     getCoursesInfoByIdsService,
     deleteCourseService,
+    updateCourseService,
 };

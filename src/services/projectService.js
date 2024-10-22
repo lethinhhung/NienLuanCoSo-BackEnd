@@ -76,7 +76,7 @@ const updateProjectCompletionService = async (projectId) => {
         console.log(projects);
 
         projects.forEach((project) => {
-            if (project.completedSteps === project.totalSteps) {
+            if (project.completedSteps === project.totalSteps && project.totalSteps !== 0) {
                 completedCount++;
             }
         });
