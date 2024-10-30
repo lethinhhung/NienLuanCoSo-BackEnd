@@ -161,9 +161,143 @@ const updateUserService = async (name, description, avatar) => {
     }
 };
 
+const addCourseToUserService = async (courseId, owner) => {
+    try {
+        const user = await User.findOne({ name: owner });
+        if (!user) {
+            return {
+                EC: 1,
+                EM: 'User not found',
+            };
+        }
+        user.courses.push(courseId);
+        await user.save();
+
+        return {
+            EC: 0,
+            EM: 'Add course to user successfully',
+            info: {
+                name: user.name,
+                courses: user.courses,
+            },
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            EC: 1,
+            EM: 'An error occurred',
+        };
+    }
+};
+
+const addTermToUserService = async (termId, owner) => {
+    try {
+        const user = await User.findOne({ name: owner });
+        if (!user) {
+            return {
+                EC: 1,
+                EM: 'User not found',
+            };
+        }
+        user.terms.push(termId);
+        await user.save();
+
+        return {
+            EC: 0,
+            EM: 'Add term to user successfully',
+            info: {
+                name: user.name,
+                terms: user.terms,
+            },
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            EC: 1,
+            EM: 'An error occurred',
+        };
+    }
+};
+
+const deleteCourseFromUserService = async (courseId, owner) => {
+    try {
+        const user = await User.findOne({ name: owner });
+        if (!user) {
+            return {
+                EC: 1,
+                EM: 'User not found',
+            };
+        }
+
+        const courseIndex = user.courses.indexOf(courseId);
+        if (courseIndex > -1) {
+            user.courses.splice(courseIndex, 1);
+            await user.save();
+        } else {
+            console.log('Course not found in user');
+            return null;
+        }
+
+        return {
+            EC: 0,
+            EM: 'Delete course from user successfully',
+            info: {
+                name: user.name,
+                terms: user.terms,
+            },
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            EC: 1,
+            EM: 'An error occurred',
+        };
+    }
+};
+
+const deleteTermFromUserService = async (termId, owner) => {
+    try {
+        const user = await User.findOne({ name: owner });
+        if (!user) {
+            return {
+                EC: 1,
+                EM: 'User not found',
+            };
+        }
+
+        const termIndex = user.terms.indexOf(termId);
+        if (termIndex > -1) {
+            user.terms.splice(termIndex, 1);
+            await user.save();
+        } else {
+            console.log('Term not found in user');
+            return null;
+        }
+
+        return {
+            EC: 0,
+            EM: 'Delete term from user successfully',
+            info: {
+                name: user.name,
+                terms: user.terms,
+            },
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            EC: 1,
+            EM: 'An error occurred',
+        };
+    }
+};
+
 module.exports = {
     createUserService,
     loginService,
     updateUserService,
     getAccountInfoService,
+    addCourseToUserService,
+    addTermToUserService,
+    deleteCourseFromUserService,
+    deleteTermFromUserService,
 };

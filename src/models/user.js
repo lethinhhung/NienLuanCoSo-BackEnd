@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
     description: String,
     avatar: String,
     terms: [{ type: mongoose.Schema.Types.ObjectId, ref: 'term' }],
+    courses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'course' }],
 });
 
 const User = mongoose.model('user', userSchema);

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const tagSchema = new mongoose.Schema({
-    owner: String,
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
     name: String,
     color: String,
 });

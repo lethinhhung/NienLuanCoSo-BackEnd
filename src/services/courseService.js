@@ -11,6 +11,7 @@ const { deleteStatisticsService, createStatisticsService } = require('./statisti
 const { createStatistics } = require('../controllers/statisticsController');
 const { getTermInfoService } = require('./termService');
 const moment = require('moment');
+const { addCourseToUserService, deleteCourseFromUserService } = require('./userService');
 
 const createCourseService = async (
     owner,
@@ -58,7 +59,7 @@ const createCourseService = async (
         });
 
         const courseId = result._id;
-
+        await addCourseToUserService(courseId, owner);
         const kq = await addCourseService(termId, courseId);
         console.log(kq);
 
@@ -126,6 +127,8 @@ const deleteCourseService = async (owner, courseId) => {
         if (result.statistics) {
             await deleteStatisticsService(result.statistics);
         }
+
+        await deleteCourseFromUserService(courseId, owner);
 
         return result;
     } catch (error) {

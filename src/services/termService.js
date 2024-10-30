@@ -7,6 +7,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { addCourseService, removeCourseService, removeTermService } = require('./sharedService');
+const { addTermToUserService, deleteTermFromUserService } = require('./userService');
 
 const createTermService = async (owner, emoji, color, cover, name, description, startDate, endDate) => {
     try {
@@ -34,6 +35,9 @@ const createTermService = async (owner, emoji, color, cover, name, description, 
             startDate: new Date(startDate),
             endDate: new Date(endDate),
         });
+
+        const termId = result._id;
+        await addTermToUserService(termId, owner);
         return { result };
     } catch (error) {
         console.log(error);
@@ -83,6 +87,8 @@ const deleteTermService = async (owner, termId) => {
                 await removeTermService(courseId, startDate, endDate);
             }
         }
+
+        await deleteTermFromUserService(termId, owner);
 
         return result;
     } catch (error) {

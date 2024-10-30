@@ -4,10 +4,17 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
+const { getAccountInfoService } = require('./userService');
+const User = require('../models/user');
+const { userInfo } = require('os');
 
 const createTagService = async (owner, name, color) => {
     try {
-        const tag = await Tag.findOne({ name });
+        const user = await User.findOne({ name: owner });
+        if (!user) {
+            return;
+        }
+        const tag = await Tag.findOne({ name: name, owner: user._id });
         if (tag) {
             console.log('Duplicate tag name');
             return {
@@ -18,7 +25,7 @@ const createTagService = async (owner, name, color) => {
 
         // save tag
         let result = await Tag.create({
-            owner: owner,
+            owner: user._id,
             name: name,
             color: color,
         });
@@ -31,7 +38,15 @@ const createTagService = async (owner, name, color) => {
 
 const getTagsInfoService = async (owner) => {
     try {
-        let result = await Tag.find({ owner: owner });
+        const user = await User.findOne({ name: owner });
+        if (!userInfo) {
+            console.log('Khong tim thay user');
+            return {
+                EC: 0,
+                EM: 'Khong tim thay user',
+            };
+        }
+        let result = await Tag.find({ owner: user._id });
         return result;
     } catch (error) {
         console.log(error);
