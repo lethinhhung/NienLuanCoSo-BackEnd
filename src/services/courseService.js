@@ -53,9 +53,9 @@ const createCourseService = async (
             tags: tagsIds,
             startDate: new Date(newStartDate),
             endDate: new Date(newEndDate),
-
             term: termId,
             statistics: statistics._id,
+            note: '',
         });
 
         const courseId = result._id;
@@ -194,6 +194,25 @@ const updateCourseService = async (
     }
 };
 
+const updateCourseNoteService = async (courseId, newNote) => {
+    try {
+        const course = await Course.findById(courseId);
+        if (!course) {
+            return {
+                EC: 0,
+                EM: 'Course not found',
+            };
+        }
+        course.note = newNote;
+        await course.save();
+
+        return course.note;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
+
 module.exports = {
     createCourseService,
     getCoursesInfoService,
@@ -201,4 +220,5 @@ module.exports = {
     getCoursesInfoByIdsService,
     deleteCourseService,
     updateCourseService,
+    updateCourseNoteService,
 };

@@ -4,6 +4,7 @@ const {
     getTermInfoService,
     deleteTermService,
     updateTermService,
+    updateTermNoteService,
 } = require('../services/termService');
 const upload = require('../../middleware/multer');
 const jwt = require('jsonwebtoken');
@@ -66,10 +67,24 @@ const updateTerm = async (req, res) => {
     return res.status(200).json(data);
 };
 
+const updateTermNote = async (req, res) => {
+    const token = req.headers.authorization.split(' ')[1];
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const owner = decoded.name;
+
+    const { termId, newNote } = req.body;
+
+    const data = await updateTermNoteService(termId, newNote);
+
+    return res.status(200).json(data);
+};
+
 module.exports = {
     createTerm,
     getTermsInfo,
     getTermInfo,
     deleteTerm,
     updateTerm,
+    updateTermNote,
 };

@@ -10,6 +10,7 @@ const termSchema = new mongoose.Schema({
     startDate: Date,
     endDate: Date,
     courses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'course' }],
+    note: String,
 });
 
 const Term = mongoose.model('term', termSchema);

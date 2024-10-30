@@ -2,7 +2,14 @@ const express = require('express');
 const path = require('path');
 const { createUser, handleLogin, getAccountInfo, updateUser } = require('../controllers/userController');
 const { createTag, getTagsInfo, getTagsInfoByIds } = require('../controllers/tagController');
-const { createTerm, getTermsInfo, getTermInfo, deleteTerm, updateTerm } = require('../controllers/termController');
+const {
+    createTerm,
+    getTermsInfo,
+    getTermInfo,
+    deleteTerm,
+    updateTerm,
+    updateTermNote,
+} = require('../controllers/termController');
 const {
     createCourse,
     getCourseInfo,
@@ -10,6 +17,7 @@ const {
     getCoursesInfoByIds,
     deleteCourse,
     updateCourse,
+    updateCourseNote,
 } = require('../controllers/courseController');
 const {
     createLesson,
@@ -78,6 +86,7 @@ routerAPI.post('/delete-term', deleteTerm);
 routerAPI.post('/add-course-to-term-by-id', addCourseToTerm);
 routerAPI.post('/remove-course-from-term-by-id', removeCourseFromTerm);
 routerAPI.post('/update-term-info', uploadCover.single('cover'), updateTerm);
+routerAPI.post('/update-term-note', updateTermNote);
 
 //Course
 routerAPI.post('/create-new-course', uploadCover.single('cover'), createCourse);
@@ -86,6 +95,7 @@ routerAPI.get('/get-courses-info', getCoursesInfo);
 routerAPI.post('/get-courses-info-by-ids', getCoursesInfoByIds);
 routerAPI.post('/delete-course', deleteCourse);
 routerAPI.post('/update-course-info', uploadCover.single('cover'), updateCourse);
+routerAPI.post('/update-course-note', updateCourseNote);
 
 //Lesson
 routerAPI.post('/create-new-lesson', uploadContent.single('content'), createLesson);

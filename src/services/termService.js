@@ -34,6 +34,7 @@ const createTermService = async (owner, emoji, color, cover, name, description, 
             description: description,
             startDate: new Date(startDate),
             endDate: new Date(endDate),
+            note: '',
         });
 
         const termId = result._id;
@@ -140,6 +141,25 @@ const updateTermService = async (owner, emoji, color, cover, name, description, 
     }
 };
 
+const updateTermNoteService = async (termId, newNote) => {
+    try {
+        const term = await Term.findById(termId);
+        if (!term) {
+            return {
+                EC: 0,
+                EM: 'Term not found',
+            };
+        }
+        term.note = newNote;
+        await term.save();
+
+        return term.note;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
+
 module.exports = {
     createTermService,
     getTermsInfoService,
@@ -148,4 +168,5 @@ module.exports = {
     removeCourseService,
     deleteTermService,
     updateTermService,
+    updateTermNoteService,
 };

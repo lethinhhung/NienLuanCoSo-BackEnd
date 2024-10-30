@@ -13,6 +13,7 @@ const courseSchema = new mongoose.Schema({
     term: { type: mongoose.Schema.Types.ObjectId, ref: 'term' },
     lessons: [{ type: mongoose.Schema.Types.ObjectId, ref: 'lesson' }],
     statistics: { type: mongoose.Schema.Types.ObjectId, ref: 'statistics' },
+    note: String,
 });
 
 const Course = mongoose.model('course', courseSchema);
