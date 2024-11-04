@@ -1,11 +1,11 @@
 const Test = require('../models/test');
 const Statistics = require('../models/statistics');
 
-const createTestService = async (name, gradeWeight, maxScore, statisticsId) => {
+const createTestService = async (name, gradeWeight, maxScore, statisticsId, date) => {
     try {
         {
             const score = -1;
-            const test = await Test.create({ name, gradeWeight, maxScore, score });
+            const test = await Test.create({ name, gradeWeight, maxScore, score, date: new Date(date) });
             const statistics = await Statistics.findById(statisticsId);
             statistics.tests.push(test._id);
             statistics.save();

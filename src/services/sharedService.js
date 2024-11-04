@@ -1,10 +1,13 @@
 require('dotenv').config();
 const Term = require('../models/term');
 const Course = require('../models/course');
+const User = require('../models/user');
+const Statistics = require('../models/statistics');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
+const Test = require('../models/test');
 
 const addCourseService = async (termId, courseId) => {
     try {
@@ -100,10 +103,56 @@ const addTermService = async (courseId, termId) => {
     }
 };
 
+const getAllTestsInfoService = async (owner) => {
+    try {
+        const user = await User.findOne({ name: owner });
+        if (!user) {
+            throw new Error('User not found');
+        }
+        if (!user.courses) {
+            throw new Error("User doesn't have any courses");
+        }
+
+        let allTests = [];
+        for (const courseId of user.courses) {
+            const courseResult = await Course.findById(courseId);
+            if (!courseResult) {
+                console.log(`Course not found for courseId: ${courseId}`);
+                continue;
+            }
+
+            const statisticsResult = await Statistics.findById(courseResult.statistics);
+            if (!statisticsResult || !statisticsResult.tests) {
+                console.log(`Statistics not found or no tests for courseId: ${courseId}`);
+                continue;
+            }
+
+            for (const test of statisticsResult.tests) {
+                let testResult = await Test.findById(test);
+                if (testResult) {
+                    allTests.push({
+                        ...testResult._doc,
+                        courseName: courseResult.name,
+                        courseId: courseId,
+                    });
+                } else {
+                    console.log(`Test not found for testId: ${test}`);
+                }
+            }
+        }
+
+        return allTests;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
+
 module.exports = {
     addCourseService,
     removeCourseService,
     removeTermService,
     addLessonService,
     addTermService,
+    getAllTestsInfoService,
 };

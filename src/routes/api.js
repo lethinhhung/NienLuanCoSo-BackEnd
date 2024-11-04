@@ -27,7 +27,7 @@ const {
     getContent,
     deleteLesson,
 } = require('../controllers/lessonController');
-const { addCourseToTerm, removeCourseFromTerm } = require('../controllers/sharedController');
+const { addCourseToTerm, removeCourseFromTerm, getAllTestsInfo } = require('../controllers/sharedController');
 const { createStatistics, deleteStatistics, getStatisticsInfo } = require('../controllers/statisticsController');
 const {
     createProject,
@@ -132,5 +132,6 @@ routerAPI.post('/get-test-info', getTestInfo);
 routerAPI.post('/get-tests-info-by-ids', getTestsInfoByIds);
 routerAPI.post('/update-test-score', updateTestScore);
 routerAPI.post('/update-test-info', updateTestInfo);
+routerAPI.get('/get-all-tests-info', getAllTestsInfo);
 
 module.exports = routerAPI; //export default

@@ -6,6 +6,7 @@ const testSchema = new mongoose.Schema({
     gradeWeight: Number,
     maxScore: Number,
     score: Number,
+    date: Date,
 });
 
 const Test = mongoose.model('Test', testSchema);

@@ -8,9 +8,9 @@ const {
 } = require('../services/testService');
 
 const createTest = async (req, res) => {
-    const { name, gradeWeight, maxScore, score, statisticsId } = req.body;
+    const { name, gradeWeight, maxScore, score, statisticsId, date } = req.body;
     const newScore = score;
-    const test = await createTestService(name, gradeWeight, maxScore, statisticsId);
+    const test = await createTestService(name, gradeWeight, maxScore, statisticsId, date);
     if (score !== -1) {
         const testId = test._id;
         const rs = await updateTestScoreService(testId, newScore);
