@@ -38,6 +38,7 @@ const {
     removeCourseFromTerm,
     getAllTestsInfo,
     getAllTermGrades,
+    getUserStatistics,
 } = require('../controllers/sharedController');
 const { createStatistics, deleteStatistics, getStatisticsInfo } = require('../controllers/statisticsController');
 const {
@@ -84,6 +85,7 @@ routerAPI.post('/login', handleLogin);
 routerAPI.get('/account', getAccountInfo);
 routerAPI.put('/update', uploadAvatar.single('avatar'), updateUser);
 routerAPI.post('/update-user-note', updateUserNote);
+routerAPI.get('/get-user-statistics', getUserStatistics);
 
 //Tag
 routerAPI.post('/create-new-tag', createTag);

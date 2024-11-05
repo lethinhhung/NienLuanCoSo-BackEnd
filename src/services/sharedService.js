@@ -203,6 +203,47 @@ const getAllTermGradesService = async (owner) => {
     }
 };
 
+const getUserStatisticsService = async (owner) => {
+    try {
+        const user = await User.findOne({ name: owner });
+        if (!user) {
+            throw new Error('User not found');
+        }
+        if (!user.terms) {
+            console.log('No term');
+            return null;
+        }
+
+        let userStatistics = {
+            terms: user.terms.length,
+            courses: user.courses.length,
+            tests: 0,
+            projects: 0,
+        };
+
+        for (const courseId of user.courses) {
+            const courseResult = await Course.findById(courseId);
+            if (!courseResult) {
+                console.log(`course not found for courseId: ${courseId}`);
+                continue;
+            }
+
+            const statisticsResult = await Statistics.findById(courseResult.statistics);
+            if (statisticsResult.tests && statisticsResult.tests.length > 0) {
+                userStatistics.tests += statisticsResult.tests.length;
+            }
+            if (statisticsResult.projects && statisticsResult.projects.length > 0) {
+                userStatistics.projects += statisticsResult.projects.length;
+            }
+        }
+
+        return userStatistics;
+    } catch (error) {
+        console.error('Error fetching term grades:', error);
+        throw error;
+    }
+};
+
 module.exports = {
     addCourseService,
     removeCourseService,
@@ -211,4 +252,5 @@ module.exports = {
     addTermService,
     getAllTestsInfoService,
     getAllTermGradesService,
+    getUserStatisticsService,
 };

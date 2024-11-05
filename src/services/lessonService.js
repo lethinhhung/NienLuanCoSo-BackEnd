@@ -106,7 +106,7 @@ const getContentService = async (owner, lessonId) => {
     }
 };
 
-const deleteLessonService = async (owner, lessonId) => {
+const deleteLessonService = async (lessonId) => {
     try {
         // Delete the lesson
         let result = await Lesson.findByIdAndDelete(lessonId);

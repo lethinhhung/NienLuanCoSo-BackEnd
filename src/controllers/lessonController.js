@@ -83,7 +83,7 @@ const deleteLesson = async (req, res) => {
 
     const { lessonId } = req.body;
 
-    const data = await deleteLessonService(owner, lessonId);
+    const data = await deleteLessonService(lessonId);
     return res.status(200).json(data);
 };
 

@@ -12,6 +12,7 @@ const { createStatistics } = require('../controllers/statisticsController');
 const { getTermInfoService } = require('./termService');
 const moment = require('moment');
 const { addCourseToUserService, deleteCourseFromUserService } = require('./userService');
+const { deleteLessonsByIdsService, deleteLessonService } = require('./lessonService');
 
 const createCourseService = async (
     owner,
@@ -126,6 +127,12 @@ const deleteCourseService = async (owner, courseId) => {
 
         if (result.statistics) {
             await deleteStatisticsService(result.statistics);
+        }
+
+        if (result.lessons && result.lessons.length > 0) {
+            for (const lessonId of result.lessons) {
+                await deleteLessonService(lessonId);
+            }
         }
 
         await deleteCourseFromUserService(courseId, owner);
