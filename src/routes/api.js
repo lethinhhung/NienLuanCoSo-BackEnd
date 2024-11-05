@@ -1,6 +1,12 @@
 const express = require('express');
 const path = require('path');
-const { createUser, handleLogin, getAccountInfo, updateUser } = require('../controllers/userController');
+const {
+    createUser,
+    handleLogin,
+    getAccountInfo,
+    updateUser,
+    updateUserNote,
+} = require('../controllers/userController');
 const { createTag, getTagsInfo, getTagsInfoByIds } = require('../controllers/tagController');
 const {
     createTerm,
@@ -72,6 +78,7 @@ routerAPI.post('/login', handleLogin);
 //Account
 routerAPI.get('/account', getAccountInfo);
 routerAPI.put('/update', uploadAvatar.single('avatar'), updateUser);
+routerAPI.post('/update-user-note', updateUserNote);
 
 //Tag
 routerAPI.post('/create-new-tag', createTag);

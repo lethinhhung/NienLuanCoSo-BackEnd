@@ -26,6 +26,7 @@ const createUserService = async (name, email, password, description) => {
             email: email,
             password: hashPassword,
             description: description,
+            note: '',
         });
         return { result };
     } catch (error) {
@@ -96,6 +97,7 @@ const getAccountInfoService = async (name) => {
                 email: user.email,
                 description: user.description,
                 avatarPath: user.avatar,
+                note: user.note,
             },
         };
     } catch (error) {
@@ -291,6 +293,22 @@ const deleteTermFromUserService = async (termId, owner) => {
     }
 };
 
+const updateUserNoteService = async (owner, newNote) => {
+    try {
+        const user = await User.findOne({ name: owner });
+        if (!user) return null;
+        user.note = newNote;
+        await user.save();
+        return {
+            EC: 0,
+            EM: 'Update user note successfully',
+            note: user.note,
+        };
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 module.exports = {
     createUserService,
     loginService,
@@ -300,4 +318,5 @@ module.exports = {
     addTermToUserService,
     deleteCourseFromUserService,
     deleteTermFromUserService,
+    updateUserNoteService,
 };
