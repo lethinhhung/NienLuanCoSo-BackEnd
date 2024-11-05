@@ -107,6 +107,8 @@ const deleteCourse = async (req, res) => {
 
 const updateCourse = async (req, res) => {
     const { emoji, color, name, description, startDate, endDate, term, courseId } = req.body;
+    let newStartDate = startDate;
+    let newEndDate = endDate;
     const cover = req.file;
     const tags = [];
     if (req.body.tags) {
@@ -123,7 +125,12 @@ const updateCourse = async (req, res) => {
     const tagsResult = await Tag.find({ name: { $in: tags } }).select('_id');
     const tagIds = tagsResult.map((tag) => tag._id);
 
-    const termId = await Term.findOne({ name: term }).select('_id');
+    const termResult = await Term.findOne({ name: term });
+    const termId = termResult ? termResult._id : null;
+    if (termId) {
+        newStartDate = moment(termResult.startDate).format('YYYY-MM-DD');
+        newEndDate = moment(termResult.endDate).format('YYYY-MM-DD');
+    }
 
     const data = await updateCourseService(
         owner,
@@ -133,8 +140,8 @@ const updateCourse = async (req, res) => {
         name,
         description,
         tagIds,
-        startDate,
-        endDate,
+        newStartDate,
+        newEndDate,
         termId,
         courseId,
     );
