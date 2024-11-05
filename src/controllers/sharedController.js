@@ -4,6 +4,7 @@ const {
     removeCourseService,
     removeTermService,
     getAllTestsInfoService,
+    getAllTermGradesService,
 } = require('../services/sharedService');
 const { uploadAvatar } = require('../../middleware/multer');
 const jwt = require('jsonwebtoken');
@@ -56,8 +57,23 @@ const getAllTestsInfo = async (req, res) => {
     }
 };
 
+const getAllTermGrades = async (req, res) => {
+    const token = req.headers.authorization.split(' ')[1];
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const owner = decoded.name;
+
+    const result = await getAllTermGradesService(owner);
+    if (result) {
+        return res.status(200).json(result);
+    } else {
+        return res.status(500).json({ error: 'Failed to fetch tests info' });
+    }
+};
+
 module.exports = {
     addCourseToTerm,
     removeCourseFromTerm,
     getAllTestsInfo,
+    getAllTermGrades,
 };

@@ -33,7 +33,12 @@ const {
     getContent,
     deleteLesson,
 } = require('../controllers/lessonController');
-const { addCourseToTerm, removeCourseFromTerm, getAllTestsInfo } = require('../controllers/sharedController');
+const {
+    addCourseToTerm,
+    removeCourseFromTerm,
+    getAllTestsInfo,
+    getAllTermGrades,
+} = require('../controllers/sharedController');
 const { createStatistics, deleteStatistics, getStatisticsInfo } = require('../controllers/statisticsController');
 const {
     createProject,
@@ -94,6 +99,7 @@ routerAPI.post('/add-course-to-term-by-id', addCourseToTerm);
 routerAPI.post('/remove-course-from-term-by-id', removeCourseFromTerm);
 routerAPI.post('/update-term-info', uploadCover.single('cover'), updateTerm);
 routerAPI.post('/update-term-note', updateTermNote);
+routerAPI.get('/get-all-term-grades', getAllTermGrades);
 
 //Course
 routerAPI.post('/create-new-course', uploadCover.single('cover'), createCourse);

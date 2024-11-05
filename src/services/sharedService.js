@@ -149,6 +149,60 @@ const getAllTestsInfoService = async (owner) => {
     }
 };
 
+const getAllTermGradesService = async (owner) => {
+    try {
+        const user = await User.findOne({ name: owner });
+        if (!user) {
+            throw new Error('User not found');
+        }
+        if (!user.terms) {
+            console.log('No term');
+            return null;
+        }
+
+        let termGrades = [];
+        let currentTerm = {};
+        let currentCourse = {};
+        for (const termId of user.terms) {
+            const termResult = await Term.findById(termId);
+
+            if (!termResult) {
+                console.log(`term not found for termId: ${termId}`);
+                continue;
+            }
+
+            currentTerm = {
+                termName: termResult.name,
+                courses: [],
+            };
+
+            for (const courseId of termResult.courses) {
+                const courseResult = await Course.findById(courseId);
+                if (!courseResult) {
+                    console.log(`course not found for courseId: ${courseId}`);
+                    continue;
+                }
+
+                const statisticsResult = await Statistics.findById(courseResult.statistics);
+
+                currentCourse = {
+                    courseName: courseResult.name,
+                    score: statisticsResult.completedScore,
+                };
+
+                currentTerm.courses.push(currentCourse);
+            }
+
+            termGrades.push(currentTerm);
+        }
+
+        return termGrades;
+    } catch (error) {
+        console.error('Error fetching term grades:', error);
+        throw error;
+    }
+};
+
 module.exports = {
     addCourseService,
     removeCourseService,
@@ -156,4 +210,5 @@ module.exports = {
     addLessonService,
     addTermService,
     getAllTestsInfoService,
+    getAllTermGradesService,
 };
