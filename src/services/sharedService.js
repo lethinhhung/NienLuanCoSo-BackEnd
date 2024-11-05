@@ -134,6 +134,7 @@ const getAllTestsInfoService = async (owner) => {
                         ...testResult._doc,
                         courseName: courseResult.name,
                         courseId: courseId,
+                        statisticsId: courseResult.statistics,
                     });
                 } else {
                     console.log(`Test not found for testId: ${test}`);

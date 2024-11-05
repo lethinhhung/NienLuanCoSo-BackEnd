@@ -95,7 +95,43 @@ const updateTestScoreService = async (testId, newScore) => {
     }
 };
 
-const updateTestInfoService = async (testId, name, gradeWeight, maxScore, score) => {
+// const updateTestInfoService = async (testId, name, gradeWeight, maxScore, score) => {
+//     try {
+//         const test = await Test.findById(testId);
+
+//         // Cap nhat statistics cu
+//         if (test.score !== -1) {
+//             const statistics = await Statistics.findOne({ tests: testId });
+//             statistics.completedGradeWeight = statistics.completedGradeWeight - (test.gradeWeight - gradeWeight);
+//             statistics.completedScore =
+//                 statistics.completedScore -
+//                 (test.score / test.maxScore) * test.gradeWeight +
+//                 (score / maxScore) * gradeWeight;
+//             await statistics.save();
+//         } else {
+//             const statistics = await Statistics.findOne({ tests: testId });
+//             statistics.completedGradeWeight += gradeWeight;
+//             statistics.completedScore += (score / maxScore) * test.gradeWeight;
+//             await statistics.save();
+//         }
+
+//         // Cap nhat test moi
+//         test.name = name;
+//         test.gradeWeight = gradeWeight;
+//         test.maxScore = maxScore;
+//         test.score = score;
+//         await test.save();
+
+//         // Cap nhat statistics moi
+
+//         return test;
+//     } catch (error) {
+//         console.error(error);
+//         return null;
+//     }
+// };
+
+const updateTestInfoService = async (testId, name, gradeWeight, maxScore, score, date) => {
     try {
         const test = await Test.findById(testId);
 
@@ -120,6 +156,7 @@ const updateTestInfoService = async (testId, name, gradeWeight, maxScore, score)
         test.gradeWeight = gradeWeight;
         test.maxScore = maxScore;
         test.score = score;
+        test.date = new Date(date);
         await test.save();
 
         // Cap nhat statistics moi

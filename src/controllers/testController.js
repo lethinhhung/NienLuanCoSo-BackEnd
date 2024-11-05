@@ -44,8 +44,8 @@ const updateTestScore = async (req, res) => {
 };
 
 const updateTestInfo = async (req, res) => {
-    const { testId, name, gradeWeight, maxScore, score } = req.body;
-    const tests = await updateTestInfoService(testId, name, gradeWeight, maxScore, score);
+    const { testId, name, gradeWeight, maxScore, score, date } = req.body;
+    const tests = await updateTestInfoService(testId, name, gradeWeight, maxScore, score, date);
     return res.status(200).json(tests);
 };
 
