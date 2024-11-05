@@ -77,7 +77,7 @@ const updateProjectStepService = async (projectStepId, status, name) => {
         // Update project completed steps
         const projectStep = await ProjectStep.findById(projectStepId);
 
-        if (projectStep.status.toString() !== status) {
+        if (projectStep.status.toString() !== status.toString()) {
             if (status === 'true') {
                 project.completedSteps += 1;
             } else {
