@@ -3,6 +3,7 @@ const Term = require('../models/term');
 const Course = require('../models/course');
 const User = require('../models/user');
 const Statistics = require('../models/statistics');
+const Project = require('../models/project');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
@@ -292,6 +293,47 @@ const getAllCurrentService = async (owner) => {
     }
 };
 
+const getIncompleteProjectsService = async (owner) => {
+    try {
+        const data = [];
+        const user = await User.findOne({ name: owner });
+        if (!user) {
+            throw new Error('User not found');
+        }
+        if (!user.courses) {
+            return data;
+        }
+
+        for (const courseId of user.courses) {
+            const courseResult = await Course.findById(courseId);
+            if (!courseResult) {
+                console.log(`course not found for courseId: ${courseId}`);
+                continue;
+            }
+
+            const statisticsId = courseResult.statistics;
+            const statisticsResult = await Statistics.findById(statisticsId);
+            if (statisticsResult) {
+                for (const projectId of statisticsResult.projects) {
+                    const projectResult = await Project.findById(projectId);
+
+                    if (projectResult.completedSteps !== projectResult.totalSteps) {
+                        data.push({
+                            project: projectResult,
+                            course: courseResult,
+                        });
+                    }
+                }
+            }
+        }
+
+        return data;
+    } catch (error) {
+        console.error('Error fetching term grades:', error);
+        throw error;
+    }
+};
+
 module.exports = {
     addCourseService,
     removeCourseService,
@@ -302,4 +344,5 @@ module.exports = {
     getAllTermGradesService,
     getUserStatisticsService,
     getAllCurrentService,
+    getIncompleteProjectsService,
 };

@@ -40,6 +40,7 @@ const {
     getAllTermGrades,
     getUserStatistics,
     getAllCurrent,
+    getIncompleteProject,
 } = require('../controllers/sharedController');
 const { createStatistics, deleteStatistics, getStatisticsInfo } = require('../controllers/statisticsController');
 const {
@@ -88,6 +89,7 @@ routerAPI.put('/update', uploadAvatar.single('avatar'), updateUser);
 routerAPI.post('/update-user-note', updateUserNote);
 routerAPI.get('/get-user-statistics', getUserStatistics);
 routerAPI.get('/get-all-current', getAllCurrent);
+routerAPI.get('/get-incomplete-project', getIncompleteProject);
 
 //Tag
 routerAPI.post('/create-new-tag', createTag);
