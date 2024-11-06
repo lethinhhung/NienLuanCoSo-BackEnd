@@ -13,6 +13,7 @@ const Tag = require('../models/tag');
 const Term = require('../models/term');
 const { deleteLessonsByIdsService } = require('../services/lessonService');
 const moment = require('moment');
+const { addCourseService } = require('../services/sharedService');
 
 const createCourse = async (req, res) => {
     const { emoji, color, name, description, startDate, endDate, term } = req.body;
@@ -124,6 +125,19 @@ const updateCourse = async (req, res) => {
 
     const tagsResult = await Tag.find({ name: { $in: tags } }).select('_id');
     const tagIds = tagsResult.map((tag) => tag._id);
+
+    if (term === '') {
+        const termWithCourse = await Term.findOne({ courses: courseId });
+        if (termWithCourse) {
+            termWithCourse.courses.pull(courseId);
+            await termWithCourse.save();
+        }
+    } else {
+        const termId = await Term.findOne({ name: term });
+        if (termId) {
+            await addCourseService(termId, courseId);
+        }
+    }
 
     const termResult = await Term.findOne({ name: term });
     const termId = termResult ? termResult._id : null;
