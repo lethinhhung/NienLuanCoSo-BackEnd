@@ -6,8 +6,9 @@ const {
     getAccountInfo,
     updateUser,
     updateUserNote,
+    getUserAvatar,
 } = require('../controllers/userController');
-const { createTag, getTagsInfo, getTagsInfoByIds } = require('../controllers/tagController');
+const { createTag, getTagsInfo, getTagsInfoByIds, deleteTagById } = require('../controllers/tagController');
 const {
     createTerm,
     getTermsInfo,
@@ -90,11 +91,13 @@ routerAPI.post('/update-user-note', updateUserNote);
 routerAPI.get('/get-user-statistics', getUserStatistics);
 routerAPI.get('/get-all-current', getAllCurrent);
 routerAPI.get('/get-incomplete-project', getIncompleteProject);
+routerAPI.get('/get-user-avatar', getUserAvatar);
 
 //Tag
 routerAPI.post('/create-new-tag', createTag);
 routerAPI.get('/get-tags-info', getTagsInfo);
 routerAPI.post('/get-tags-info-by-ids', getTagsInfoByIds);
+routerAPI.post('/delete-tag-by-id', deleteTagById);
 
 //Term
 routerAPI.post('/create-new-term', uploadCover.single('cover'), createTerm);

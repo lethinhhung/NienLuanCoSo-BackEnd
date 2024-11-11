@@ -7,6 +7,7 @@ const path = require('path');
 const { getAccountInfoService } = require('./userService');
 const User = require('../models/user');
 const { userInfo } = require('os');
+const Course = require('../models/course');
 
 const createTagService = async (owner, name, color) => {
     try {
@@ -58,6 +59,30 @@ const getTagsInfoByIdsService = async (owner, tagsIds) => {
     try {
         let result = await Tag.find({ _id: { $in: tagsIds } });
         return result;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
+
+const deleteTagByIdService = async (tagId) => {
+    try {
+        // Delete the tag by its ID
+        let tagResult = await Tag.findByIdAndDelete(tagId);
+
+        // If the tag is deleted successfully, proceed to update the courses
+        if (tagResult) {
+            // Update all courses by removing the deleted tagId from their tags array
+            let courseResult = await Course.updateMany(
+                { tags: tagId }, // Find courses that contain this tagId
+                { $pull: { tags: tagId } }, // Remove the tagId from the tags array
+            );
+
+            return tagResult; // Return both results
+        }
+
+        // If no tag was deleted, return null
+        return null;
     } catch (error) {
         console.log(error);
         return null;
@@ -124,4 +149,5 @@ module.exports = {
     // updateTagService,
     getTagsInfoService,
     getTagsInfoByIdsService,
+    deleteTagByIdService,
 };

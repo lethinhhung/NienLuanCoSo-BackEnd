@@ -7,6 +7,8 @@ const {
 } = require('../services/userService');
 const upload = require('../../middleware/multer');
 const jwt = require('jsonwebtoken');
+const User = require('../models/user');
+const path = require('path');
 
 const createUser = async (req, res) => {
     const { name, email, password, description } = req.body;
@@ -53,10 +55,26 @@ const updateUserNote = async (req, res) => {
     return res.status(200).json(data);
 };
 
+const getUserAvatar = async (req, res) => {
+    const token = req.headers.authorization.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const name = decoded.name;
+
+    const user = await User.findOne({ name });
+    if (!user || !user.avatar) {
+        return res.status(404).json({ EC: 1, EM: 'Avatar not found' });
+    }
+
+    const avatarPath = path.join(__dirname, '../../', user.avatar);
+    console.log(avatarPath);
+    return res.sendFile(avatarPath);
+};
+
 module.exports = {
     createUser,
     handleLogin,
     getAccountInfo,
     updateUser,
     updateUserNote,
+    getUserAvatar,
 };
