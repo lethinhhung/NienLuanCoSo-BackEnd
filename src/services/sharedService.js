@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
 const Test = require('../models/test');
+const Tag = require('../models/tag');
 
 const addCourseService = async (termId, courseId) => {
     try {
@@ -214,12 +215,14 @@ const getUserStatisticsService = async (owner) => {
             console.log('No term');
             return null;
         }
+        const tags = await Tag.countDocuments({ owner: user._id });
 
         let userStatistics = {
             terms: user.terms.length,
             courses: user.courses.length,
             tests: 0,
             projects: 0,
+            tags: tags,
         };
 
         for (const courseId of user.courses) {

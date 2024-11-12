@@ -144,10 +144,37 @@ const deleteTagByIdService = async (tagId) => {
 //     }
 // };
 
+const getCourseStatisticsByTagService = async (owner) => {
+    try {
+        const user = await User.findOne({ name: owner });
+        if (!user) return null;
+
+        // Tìm tất cả các tag của user
+        const tags = await Tag.find({ owner: user._id });
+        if (tags.length === 0) return [];
+
+        const statistics = [];
+
+        for (const tag of tags) {
+            const tagNumber = await Course.countDocuments({ tags: tag._id });
+            statistics.push({
+                tag: tag,
+                tagNumber: tagNumber,
+            });
+        }
+
+        return statistics;
+    } catch (error) {
+        console.error('Error fetching course statistics:', error);
+        return null;
+    }
+};
+
 module.exports = {
     createTagService,
     // updateTagService,
     getTagsInfoService,
     getTagsInfoByIdsService,
     deleteTagByIdService,
+    getCourseStatisticsByTagService,
 };

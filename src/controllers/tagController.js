@@ -3,6 +3,7 @@ const {
     getTagsInfoService,
     getTagsInfoByIdsService,
     deleteTagByIdService,
+    getCourseStatisticsByTagService,
 } = require('../services/tagService');
 const upload = require('../../middleware/multer');
 const jwt = require('jsonwebtoken');
@@ -65,10 +66,21 @@ const deleteTagById = async (req, res) => {
     return res.status(200).json(data);
 };
 
+const getCourseStatisticsByTag = async (req, res) => {
+    const token = req.headers.authorization.split(' ')[1];
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const owner = decoded.name;
+
+    const data = await getCourseStatisticsByTagService(owner);
+    return res.status(200).json(data);
+};
+
 module.exports = {
     createTag,
     getTagsInfo,
     getTagsInfoByIds,
     // updateUser,
     deleteTagById,
+    getCourseStatisticsByTag,
 };

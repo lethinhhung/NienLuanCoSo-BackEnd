@@ -8,7 +8,13 @@ const {
     updateUserNote,
     getUserAvatar,
 } = require('../controllers/userController');
-const { createTag, getTagsInfo, getTagsInfoByIds, deleteTagById } = require('../controllers/tagController');
+const {
+    createTag,
+    getTagsInfo,
+    getTagsInfoByIds,
+    deleteTagById,
+    getCourseStatisticsByTag,
+} = require('../controllers/tagController');
 const {
     createTerm,
     getTermsInfo,
@@ -98,6 +104,7 @@ routerAPI.post('/create-new-tag', createTag);
 routerAPI.get('/get-tags-info', getTagsInfo);
 routerAPI.post('/get-tags-info-by-ids', getTagsInfoByIds);
 routerAPI.post('/delete-tag-by-id', deleteTagById);
+routerAPI.get('/get-tags-statistics', getCourseStatisticsByTag);
 
 //Term
 routerAPI.post('/create-new-term', uploadCover.single('cover'), createTerm);
