@@ -140,6 +140,24 @@ const deleteLessonsByIdsService = async (lessonsIds) => {
         return null;
     }
 };
+
+const updateLessonInfoService = async (lessonId, name, description) => {
+    try {
+        let lesson = await Lesson.findById(lessonId);
+        if (lesson) {
+            lesson.name = name;
+            lesson.description = description;
+            await lesson.save();
+            return lesson;
+        } else {
+            return 'Lesson not found';
+        }
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
+
 module.exports = {
     createLessonService,
     getLessonsInfoService,
@@ -149,4 +167,5 @@ module.exports = {
     addContentService,
     getContentService,
     deleteLessonsByIdsService,
+    updateLessonInfoService,
 };

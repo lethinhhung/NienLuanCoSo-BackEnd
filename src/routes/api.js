@@ -39,6 +39,7 @@ const {
     addContent,
     getContent,
     deleteLesson,
+    updateLessonInfo,
 } = require('../controllers/lessonController');
 const {
     addCourseToTerm,
@@ -135,6 +136,7 @@ routerAPI.post('/get-lesson-info', getLessonInfo);
 // routerAPI.get('/get-courses-info', getCoursesInfo);
 routerAPI.post('/get-lessons-info-by-ids', getLessonsInfoByIds);
 routerAPI.post('/delete-lesson', deleteLesson);
+routerAPI.post('/update-lesson-info', updateLessonInfo);
 
 // Statistics
 routerAPI.post('/create-new-statistics', createStatistics);

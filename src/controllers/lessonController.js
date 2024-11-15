@@ -6,6 +6,7 @@ const {
     deleteLessonService,
     addContentService,
     getContentService,
+    updateLessonInfoService,
 } = require('../services/lessonService');
 const { uploadAvatar } = require('../../middleware/multer');
 const jwt = require('jsonwebtoken');
@@ -87,6 +88,18 @@ const deleteLesson = async (req, res) => {
     return res.status(200).json(data);
 };
 
+const updateLessonInfo = async (req, res) => {
+    const token = req.headers.authorization.split(' ')[1];
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const owner = decoded.name;
+
+    const { lessonId, name, description } = req.body;
+
+    const data = await updateLessonInfoService(lessonId, name, description);
+    return res.status(200).json(data);
+};
+
 module.exports = {
     createLesson,
     getLessonInfo,
@@ -94,4 +107,5 @@ module.exports = {
     addContent,
     getContent,
     deleteLesson,
+    updateLessonInfo,
 };
